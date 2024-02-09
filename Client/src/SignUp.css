@@ -50,7 +50,7 @@ input {
   padding: 15px;
   background-color: #F05514;
   color: #ffffff;
-  border: none;
+  border: 2px solid black;
   border-radius: 10px;
   font-size: 16px;
   cursor: pointer;
