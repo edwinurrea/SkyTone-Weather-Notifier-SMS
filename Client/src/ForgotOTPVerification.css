@@ -1,0 +1,92 @@
+.otp-verification-page {
+  text-align: center;
+  height: 100vh;
+  background-color: #c8eafa;
+  overflow: hidden;
+}
+  
+.otp-logo-container {
+  text-align: center;
+  margin-top: 150px;
+  margin-bottom: 50px;
+}
+  
+.otp-logo-container img {
+  max-width: 90px;
+}
+  
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+  
+.otp-verification-form {
+  max-width: 300px;
+  margin: 0 auto;
+}
+  
+.otp-form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+ 
+label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+  
+input {
+  width: 92%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.otp-verification-page .verify-button {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  background-color: #F05514;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 0 auto;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.otp-verification-page .verify-button:hover {
+  background-color: #F05514;
+}
+ 
+.otp-verification-page button {
+  background-color: transparent;
+  color: #F05514;
+  border: none;
+  cursor: pointer;
+  font: 14px "JetBrains Mono", monospace;
+}
+
+.otp-verification-page button:hover {
+  background-color: #F05514;
+}
+
+.otp-verification-page p {
+  font-size: 14px;
+  margin-top: 70px;
+  margin-bottom: -25px;
+}
+  
+a {
+  color: #F05514;
+  text-decoration: none;
+}
+  
+a:hover {
+  text-decoration: underline;
+}
+  

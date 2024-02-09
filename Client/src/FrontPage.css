@@ -1,0 +1,62 @@
+.fp-login-container {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  flex-direction: column;
+  background-color: #c8eafa;
+  overflow: hidden;
+}
+
+.fp-inner-container {
+  margin-top: -150px;
+}
+
+.fp-logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.fp-logo-container img {
+  max-width: 100%;
+  margin: 60px;
+}
+
+h1, p {
+  position: relative;
+  top: -50px;
+  font: 13px "JetBrains Mono", monospace;
+  margin-bottom: 5px;
+}
+
+.fp-button-container {
+  margin-top: -30px;
+  display: flex;
+  justify-content: center;
+}
+  
+.fp-login-button, .fp-signup-button {
+  width: 100px;
+  height: 25px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid black;
+  font-family: "JetBrains Mono", monospace;
+  color: #FFFFFF;
+}
+
+.fp-login-button {
+  background-color: #44413F;
+}
+
+.fp-signup-button {
+  margin-left: 10px;
+  background-color: #F05514;
+}

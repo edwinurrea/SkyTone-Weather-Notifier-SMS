@@ -1,0 +1,214 @@
+html {
+  background-color: #c8eafa;
+}
+.dashboard {
+    text-align: center;
+    padding: 20px;
+  }
+
+  .dash-logo-container {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 25px;
+  }
+   
+  .dash-logo-container img {
+    max-width: 90px;
+  }
+
+  .weather-section {
+    width: auto;
+    margin-top: 20px;
+    margin-left: -10px;
+    margin-right: -10px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .preview-indicator {
+    background-color: #333333; 
+    color: #ffffff;
+    padding: 5px 10px; 
+    font-size: 11px;
+    text-align: center;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 5px;
+    cursor: default;
+  }
+  
+  .weather-messages {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .weather-messages div {
+    max-width: 170px;
+    position: relative;
+  }
+
+  .weather-message {
+    background-color: #333333;
+    color: #ffffff;
+    border-radius: 20px;
+    padding: 8px;
+    margin: 10px auto;
+    margin-right: 5px;
+    margin-left: 5px;
+  }
+
+  .weather-message hr {
+    border: none;
+    height: 1px;
+    margin: 5px 0;
+  }
+
+  .weather-message p {
+    font: 13px "San Francisco", sans-serif;
+    margin: 1px 0 0;
+    position: initial;
+    padding: 0px;
+    border-radius: 10px;
+    max-width: 100%;
+    text-align: left; 
+  }
+
+  .weather-message::after {
+    content: '';
+    position: absolute;
+    border-style: solid;
+    border-width: 20px 10px 0;
+    border-color: #333333 transparent transparent transparent;
+    bottom: -12px;
+    left: -4.3%;
+    transform: rotate(35deg);
+    border-right-width: 12px;
+    border-left-width: 5px;
+    border-top-width: 21px;
+    border-bottom-width: 5px;
+  }
+
+  .zip-code-section {
+    margin-top: 20px;
+    margin-left: -10px;
+    margin-right: -10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .zip-code-form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  
+  .zip-code-form input {
+    width: auto;
+    margin-right: 20px;
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+
+  .zip-code-form input#zipcode {
+    width: 120px;
+  }
+
+  @media (max-width: 320px) {
+    .zip-code-form input#zipcode, input#deliverytime {
+      margin: auto;
+    }
+  }
+
+  .zip-code-form input#deliverytime {
+    height: 39px;
+    cursor: pointer;
+  }
+
+  .zip-code-form button {
+    height: 39px;
+    width: auto;
+    padding: 12px 20px;
+    background-color: #F05514;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 4px;
+    text-align: left;
+  }
+  
+  .zip-codes-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 20px;
+    margin-left: -10px;
+    margin-right: -10px;
+    padding: 20px;
+  }
+
+.zip-codes-list table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.zip-codes-list th, .zip-codes-list td {
+  border: 1px solid #333333;
+  padding: 8px;
+  text-align: left;
+}
+
+.zip-codes-list td {
+  font: 15px "JetBrains Mono", monospace;
+}
+
+.zip-codes-list td input {
+  width: 83%;
+  cursor: pointer;
+}
+
+.zip-codes-list th {
+  background-color: #ffffff;
+  -webkit-text-fill-color: #333333;
+}
+
+.edit-delete-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.edit-icon {
+  max-width: 25px;
+  max-height: 25px;
+  cursor: pointer;
+}
+
+.delete-icon {
+  max-width: 25px;
+  max-height: 25px;
+  cursor: pointer;
+}
+
+  .logout-button button {
+    margin-top: 20px;
+    margin-bottom: 0px;
+    padding: 10px 20px;
+    background-color: #F05514;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  

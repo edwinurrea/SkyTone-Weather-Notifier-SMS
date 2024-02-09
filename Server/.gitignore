@@ -1,0 +1,11 @@
+# Project files
+nbproject/
+
+# Maven target folder
+target/
+
+# Configuration file
+nb-configuration.xml
+
+# config.properties file inside resources folder (template available)
+src/main/resources/config.properties
