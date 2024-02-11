@@ -1,0 +1,44 @@
+.notfound-logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.sad-face-404 {
+	display: flex;
+	margin-top: 0px;
+	justify-content: center;
+}
+
+.not-found-description h1{
+	display: flex;
+	justify-content: center;
+  font: 22px "JetBrains Mono", monospace;
+  top: -20px;
+	margin-top: 0px;
+}
+
+.not-found-description p{
+	display: flex;
+	justify-content: center;
+  font: 16px "JetBrains Mono", monospace;
+	top: 0px;
+  margin-top: 35px;
+	margin-bottom: 0px;
+}
+
+.return-front-button {
+	background-color: #F05514;
+  width: 150px;
+  height: 50px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid black;
+  font-family: "JetBrains Mono", monospace;
+  color: #FFFFFF;
+	margin-top: 60px;
+} 

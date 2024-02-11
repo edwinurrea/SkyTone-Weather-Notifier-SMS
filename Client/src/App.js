@@ -1,14 +1,15 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import FrontPage from './FrontPage.js';
-import Login from './Login.js';
-import SignUp from './SignUp.js';
+import FrontPage from './FrontPage';
+import Login from './Login';
+import SignUp from './SignUp';
 import OTPVerfication from './OTPVerification';
 import ForgotPassword from './ForgotPassword';
 import ForgotOTPVerfication from './ForgotOTPVerification';
 import ResetPassword from './ResetPassword';
 import Dashboard from './Dashboard';
+import NotFound404 from './NotFound404';
 
 function App() {
   return (
@@ -22,7 +23,8 @@ function App() {
           <Route path="/forgot" element={<ForgotPassword />} />
           <Route path="/forgotOTP" element={<ForgotOTPVerfication />} />
           <Route path="/reset" element={<ResetPassword />} />
-          <Route path="/dashboard" element={<Dashboard />} />    
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/*" element={<NotFound404 />} />        
         </Routes>
       </Router>
     </div>
