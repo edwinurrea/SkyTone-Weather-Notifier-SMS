@@ -16,13 +16,13 @@ function Login() {
 
   const handlePhoneNumberChange = (event) => {
     setPhoneNumber(event.target.value);
-};
+  };
 
   const handlePasswordChange = (event) => {
     const newPassword = event.target.value;
     setPassword(newPassword);
     setMaskedPassword(passwordVisible ? newPassword : newPassword);
-};
+  };
 
   const togglePasswordVisibility = () => {
     setPasswordVisible((prevPasswordVisible) => !prevPasswordVisible);
@@ -30,45 +30,45 @@ function Login() {
     if (!passwordVisible) { 
       return prevMaskedPassword} 
         return password;}
-  ); 
-};
+    ); 
+  };
 
-const handleLogin = async (event) => {
-  event.preventDefault();
+  const handleLogin = async (event) => {
+    event.preventDefault();
 
-  console.log("Phone Number: ", phoneNumber);
-  console.log("Password: ", password);
+    console.log("Phone Number: ", phoneNumber);
+    console.log("Password: ", password);
 
-  try {
-    const response = await fetch('/api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        phoneNumber: phoneNumber,
-        password: password
-      }),
-    });
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          phoneNumber: phoneNumber,
+          password: password
+        }),
+      });
 
-    if (response.ok) {
-      const data = await response.json();
-      localStorage.setItem('token', data.token);
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('token', data.token);
       
-      if (data.zipCodes !== null) {
-      localStorage.setItem('zipCodes', JSON.stringify(data.zipCodes));
-      console.log(data.zipCodes);
-      }
+        if (data.zipCodes !== null) {
+          localStorage.setItem('zipCodes', JSON.stringify(data.zipCodes));
+          console.log(data.zipCodes);
+        }
 
-      navigate('/dashboard'); 
-    } else {
-      setLoginError('Invalid credentials. Please try again.'); 
-      setLoginErrorPresent(true);
+        navigate('/dashboard'); 
+      } else {
+        setLoginError('Invalid credentials. Please try again.'); 
+        setLoginErrorPresent(true);
+      }
+    } catch (error) {
+      console.error('Error:', error);
     }
-  } catch (error) {
-    console.error('Error:', error);
-  }
-};
+  };
 
   return (
     <div className="login-page">

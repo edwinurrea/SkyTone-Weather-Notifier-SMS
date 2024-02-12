@@ -55,7 +55,6 @@ function OTPVerification() {
     }
   };
 
-
   return (
     <div className="otp-verification-page">
         <div className="otp-logo-container">

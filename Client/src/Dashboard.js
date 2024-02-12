@@ -358,19 +358,19 @@ function Dashboard() {
             {addError.zipCode && ((!newZipCode && !newDeliveryTime) || !newZipCode) && <div className="error-message">Zip code required</div>}
           </div>
           <div>
-          <input
-            type="time"
-            id="deliverytime"
-            value={newDeliveryTime}
-            onChange={handleDeliveryTimeChange}
-            style={{ borderColor: (addError.deliveryTime && ((!newZipCode && !newDeliveryTime) || !newDeliveryTime)) ? 'red' : 'initial' }}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                e.preventDefault();
-                addZipCode(e);
-              }
-            }}
-          />
+            <input
+              type="time"
+              id="deliverytime"
+              value={newDeliveryTime}
+              onChange={handleDeliveryTimeChange}
+              style={{ borderColor: (addError.deliveryTime && ((!newZipCode && !newDeliveryTime) || !newDeliveryTime)) ? 'red' : 'initial' }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  addZipCode(e);
+                }
+              }}
+            />
             {addError.deliveryTime && ((!newZipCode && !newDeliveryTime) || !newDeliveryTime) && <div className="error-message">Delivery time required</div>}
           </div>
           <button onClick={addZipCode}>Add</button>
@@ -430,12 +430,12 @@ function Dashboard() {
               ))}
             </tbody>
           </table>
-          </div>
-          <div className="logout-button">
-            <button onClick={handleLogout}>Logout</button>
-          </div>
+        </div>
+        <div className="logout-button">
+          <button onClick={handleLogout}>Logout</button>
         </div>
       </div>
+    </div>
   );
 }
 
