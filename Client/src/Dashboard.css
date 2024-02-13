@@ -186,19 +186,19 @@ html {
 .edit-delete-container {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content:space-around;
   align-items: center;
 }
 
 .edit-icon {
-  max-width: 25px;
-  max-height: 25px;
+  max-width: 27px;
+  max-height: 27px;
   cursor: pointer;
 }
 
 .delete-icon {
-  max-width: 25px;
-  max-height: 25px;
+  max-width: 27px;
+  max-height: 27px;
   cursor: pointer;
 }
 

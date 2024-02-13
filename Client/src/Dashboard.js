@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Dashboard.css';
 import Logo from './images/cloud-phone.png';
-import Pencil from './images/pencil.png';
+import Pencil from './images/newpencil.png';
 import Trash from './images/trashcan.png';
 import { Link, useNavigate } from 'react-router-dom';
 
