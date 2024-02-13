@@ -8,7 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 function Dashboard() {
   const [zipCodes, setZipCodes] = useState([]);
   const [newZipCode, setNewZipCode] = useState('');
-  const [newDeliveryTime, setNewDeliveryTime] = useState('');
+  const [newDeliveryTime, setNewDeliveryTime] = useState('12:00');
   const [weatherData, setWeatherData] = useState([]);
   const [addError, setAddError] = useState({ zipCode: false, deliveryTime: false });
   const [editIndex, setEditIndex] = useState(false);
