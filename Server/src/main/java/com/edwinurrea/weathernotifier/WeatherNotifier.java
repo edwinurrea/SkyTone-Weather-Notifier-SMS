@@ -64,7 +64,6 @@ public class WeatherNotifier {
                 phoneNumber = json.get("phoneNumber").getAsString();
                 password = json.get("password").getAsString();
                 logger.info("Phone Number: {}", phoneNumber);
-                logger.info("Password: {}", password);
 
                 countryCode = ValidationUtils.getValidCountryCode();
                 formattedPhoneNumber = ValidationUtils.formatToE164(phoneNumber, countryCode);
@@ -181,7 +180,6 @@ public class WeatherNotifier {
                 JsonObject json = parseJsonRequestBody(request);
 
                 password = json.get("password").getAsString();
-                logger.info("Password: {}", password);
 
                 if (!ValidationUtils.isValidPassword(password)) {
                     response.status(HTTP_BAD_REQUEST);
@@ -207,7 +205,6 @@ public class WeatherNotifier {
                 phoneNumber = json.get("phoneNumber").getAsString();
                 password = json.get("password").getAsString();
                 logger.info("Phone Number: {}", phoneNumber);
-                logger.info("Password: {}", password);
 
                 if (!ValidationUtils.isValidPhoneNumber(phoneNumber) || !ValidationUtils.isValidPassword(password)) {
                     response.status(HTTP_BAD_REQUEST);
@@ -312,8 +309,6 @@ public class WeatherNotifier {
                 userId = Integer.parseInt(jwt.getSubject());
                 
                 logger.info("User ID: {}", userId);
-                logger.info("JWT: {}", jwt);
-                logger.info("Token: {}", token);
 
                 JsonObject json = parseJsonRequestBody(request);
                 zipCode = json.get("zipCode").getAsString();
@@ -362,8 +357,6 @@ public class WeatherNotifier {
                 userId = Integer.parseInt(jwt.getSubject());
 
                 logger.info("User ID: {}", userId);
-                logger.info("JWT: {}", jwt);
-                logger.info("Token: {}", token);
 
                 JsonObject json = parseJsonRequestBody(request);
                 zipCode = json.get("zipCode").getAsString();
@@ -401,8 +394,6 @@ public class WeatherNotifier {
                 userId = Integer.parseInt(jwt.getSubject());
 
                 logger.info("User ID: {}", userId);
-                logger.info("JWT: {}", jwt);
-                logger.info("Token: {}", token);
 
                 JsonObject json = parseJsonRequestBody(request);
                 zipCode = json.get("zipCode").getAsString();
