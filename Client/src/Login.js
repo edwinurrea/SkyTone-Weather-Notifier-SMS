@@ -37,7 +37,6 @@ function Login() {
     event.preventDefault();
 
     console.log("Phone Number: ", phoneNumber);
-    console.log("Password: ", password);
 
     try {
       const response = await fetch('/api/login', {
