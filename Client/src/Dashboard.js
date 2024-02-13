@@ -12,6 +12,7 @@ function Dashboard() {
   const [weatherData, setWeatherData] = useState([]);
   const [addError, setAddError] = useState({ zipCode: false, deliveryTime: false });
   const [editIndex, setEditIndex] = useState(false);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();  
 
   const handleZipCodeChange = (event) => {
@@ -98,6 +99,11 @@ function Dashboard() {
         const updatedZipCodes = [...zipCodes];
         updatedZipCodes.splice(index, 1);
         setZipCodes(updatedZipCodes);
+        weatherData.splice(weatherData.find(weatherData => weatherData.zipCode === zipCodeToDelete ), 0)
+        setWeatherData(weatherData);
+        if (!updatedZipCodes) {
+          setLoading(false);
+        }
         console.log('Zip code and delivery time deleted successfully');
       } else {
         console.error('Failed to delete zip code and delivery time:', response.statusText);
@@ -237,6 +243,7 @@ function Dashboard() {
     } else {
       const storedZipCodesString = localStorage.getItem('zipCodes');
       if (!storedZipCodesString || storedZipCodesString === 'undefined') {
+        setLoading(false);
         return;
       } else {
         const storedZipCodes = JSON.parse(storedZipCodesString);
@@ -273,6 +280,7 @@ function Dashboard() {
               setWeatherData(newWeatherData);
             })
           .catch(error => console.error('Error:', error)); 
+          setLoading(false);
         }
       }
     }
@@ -298,7 +306,9 @@ function Dashboard() {
       <div className="weather-section">
       <div className="preview-indicator">Live Preview</div>
       <div className="weather-messages">
-        {weatherData.length > 0 ? (
+        {loading ? (
+          <div>Loading weather data...</div>
+        ) : weatherData.length > 0 ? (
           (() => {
             const weatherByZipCode = {};
 
@@ -333,7 +343,7 @@ function Dashboard() {
             ));
           })()
         ) : (
-          <div>Loading weather data...</div>
+          <div style={{maxWidth: '320px'}}>Enter a Zip Code to see the current weather!</div>
         )}
       </div>
       </div>
