@@ -237,54 +237,55 @@ function Dashboard() {
     } else {
       const storedZipCodesString = localStorage.getItem('zipCodes');
       if (!storedZipCodesString || storedZipCodesString === 'undefined') {
-      return;
-    } else {
-      const storedZipCodes = JSON.parse(storedZipCodesString);
-      console.log("Stored Zip Codes:", storedZipCodes);
-      setZipCodes([...storedZipCodes]);
+        return;
+      } else {
+        const storedZipCodes = JSON.parse(storedZipCodesString);
+        console.log("Stored Zip Codes:", storedZipCodes);
+        setZipCodes([...storedZipCodes]);
 
-      const uniqueZipCodes = [...new Set(storedZipCodes.map(data => data.zipCode))];
-      const zipCodesQueryParam = uniqueZipCodes.map(uniqueZipCode => `zipCodes=${uniqueZipCode}`).join('&');
-      console.log("Zip Codes Query Param:", zipCodesQueryParam);
+        const uniqueZipCodes = [...new Set(storedZipCodes.map(data => data.zipCode))];
+        const zipCodesQueryParam = uniqueZipCodes.map(uniqueZipCode => `zipCodes=${uniqueZipCode}`).join('&');
+        console.log("Zip Codes Query Param:", zipCodesQueryParam);
 
-      if (uniqueZipCodes.length > 0) {
-        fetch(`/api/weather?${zipCodesQueryParam}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
+        if (uniqueZipCodes.length > 0) {
+          fetch(`/api/weather?${zipCodesQueryParam}`, {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          })
+            .then(response => response.json())
+            .then(data => {
+              console.log("Received Data:", data);
+
+              const newWeatherData = data.map(weatherInfo => ({
+                locationName: weatherInfo.locationName,
+                zipCode: weatherInfo.zipCode,
+                date: weatherInfo.date,
+                maxTemperature: weatherInfo.maxTemperature,
+                minTemperature: weatherInfo.minTemperature,
+                weatherCondition: weatherInfo.weatherCondition,
+                chanceOfRain: weatherInfo.chanceOfRain,
+                windSpeed: weatherInfo.windSpeed,
+                windDirection: weatherInfo.windDirection,
+                sunriseTime: weatherInfo.sunriseTime,
+                sunsetTime: weatherInfo.sunsetTime,
+              }));
+              setWeatherData(newWeatherData);
+            })
+          .catch(error => console.error('Error:', error)); 
         }
-      })
-        .then(response => response.json())
-          .then(data => {
-            console.log("Received Data:", data);
-
-            const newWeatherData = data.map(weatherInfo => ({
-              locationName: weatherInfo.locationName,
-              zipCode: weatherInfo.zipCode,
-              date: weatherInfo.date,
-              maxTemperature: weatherInfo.maxTemperature,
-              minTemperature: weatherInfo.minTemperature,
-              weatherCondition: weatherInfo.weatherCondition,
-              chanceOfRain: weatherInfo.chanceOfRain,
-              windSpeed: weatherInfo.windSpeed,
-              windDirection: weatherInfo.windDirection,
-              sunriseTime: weatherInfo.sunriseTime,
-              sunsetTime: weatherInfo.sunsetTime,
-            }));
-          setWeatherData(newWeatherData);
-        })
-        .catch(error => console.error('Error:', error)); 
       }
-    }}
+    }
       window.addEventListener('beforeunload', () => {
         localStorage.removeItem('token');
         localStorage.clear();
       });
-    }, [navigate]);  
+  }, [navigate]);  
 
-    const handleLogout = () => {
-      localStorage.clear();
-      navigate('/');
-    };
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('/');
+  };
 
   return (
     <div className="dashboard">
