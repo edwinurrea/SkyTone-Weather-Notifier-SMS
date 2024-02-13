@@ -236,7 +236,7 @@ function Dashboard() {
       localStorage.clear();
     } else {
       const storedZipCodesString = localStorage.getItem('zipCodes');
-      if (!storedZipCodesString) {
+      if (!storedZipCodesString || storedZipCodesString === 'undefined') {
       return;
     } else {
       const storedZipCodes = JSON.parse(storedZipCodesString);
