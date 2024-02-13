@@ -140,9 +140,8 @@ function Dashboard() {
 
     setZipCodes([...zipCodes, newZipCodeData]);
     setNewZipCode('');
-    setNewDeliveryTime('');
+    setNewDeliveryTime('12:00');
     console.log(newZipCodeData);
-    console.log(setNewDeliveryTime);
 
     try {
       const token = localStorage.getItem('token');
