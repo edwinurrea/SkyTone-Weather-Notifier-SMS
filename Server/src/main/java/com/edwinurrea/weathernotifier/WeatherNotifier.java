@@ -33,7 +33,6 @@ public class WeatherNotifier {
     private static String password;
     private static String zipCode;
     private static int zipCodeId;
-    private static int subscriberId;
     private static String verificationCode;
     private static String verificationSid;
     private static int userId;
@@ -75,8 +74,8 @@ public class WeatherNotifier {
                 if (userId != -1 && UserManager.isUserAuthenticated(formattedPhoneNumber, password)) {
                     String token = UserManager.authenticateAndGetToken(formattedPhoneNumber, password, userId);
 
-                    SubscriberDao subscriberDao = new SubscriberDao();
-                    List<SubscriberDao.ZipCodeData> zipCodeDataList = subscriberDao.getZipCodesAndDeliveryTimes(userId);
+                    ZipCodeManager zipCodeManager = new ZipCodeManager();
+                    List<ZipCodeManager.ZipCodeData> zipCodeDataList = zipCodeManager.getZipCodesAndDeliveryTimes(userId);
 
                     if (token != null) {
                         JsonObject responseJson = new JsonObject();
@@ -84,7 +83,7 @@ public class WeatherNotifier {
 
                         if (zipCodeDataList != null && !zipCodeDataList.isEmpty()) {
                             JsonArray zipCodesArray = new JsonArray();
-                            for (SubscriberDao.ZipCodeData data : zipCodeDataList) {
+                            for (ZipCodeManager.ZipCodeData data : zipCodeDataList) {
                                 JsonObject zipCodeObject = new JsonObject();
                                 zipCodeObject.addProperty("zipCode", data.getZipCode());
                                 zipCodeObject.addProperty("deliveryTime", data.getDeliveryTime());
@@ -247,7 +246,6 @@ public class WeatherNotifier {
                     UserManager.registerNewUser(formattedPhoneNumber, password);
                     userId = UserManager.getUserId(formattedPhoneNumber);
                     request.session().attribute("formattedPhoneNumber", formattedPhoneNumber);
-                    SubscriberDao.insertSubscriber(userId);
                     String token = UserManager.authenticateAndGetToken(formattedPhoneNumber, password, userId);
 
                     if (token != null) {
@@ -307,25 +305,23 @@ public class WeatherNotifier {
                 String token = request.headers("Authorization").replace("Bearer ", "");
                 DecodedJWT jwt = JWT.require(Algorithm.HMAC256(secretKey)).build().verify(token);
                 userId = Integer.parseInt(jwt.getSubject());
-                
                 logger.info("User ID: {}", userId);
 
                 JsonObject json = parseJsonRequestBody(request);
                 zipCode = json.get("zipCode").getAsString();
                 String deliveryTime = json.get("deliveryTime").getAsString();
 
-                zipCodeId = SubscriberDao.getZipCodeId(zipCode);
-
+                zipCodeId = ZipCodeManager.getZipCodeId(zipCode);
                 logger.info("ZipCodeId: {}", zipCodeId);
 
                 if (zipCodeId == -1) {
-                    SubscriberDao.insertZipCode(zipCode);
-                    zipCodeId = SubscriberDao.getZipCodeId(zipCode);
-                    SubscriberDao.associateUserWithZipDelivery(userId, zipCodeId, deliveryTime);
+                    ZipCodeManager.insertZipCode(zipCode);
+                    zipCodeId = ZipCodeManager.getZipCodeId(zipCode);
+                    ZipCodeManager.associateUserWithZipDelivery(userId, zipCodeId, deliveryTime);
                 } else {
-                    String existingDeliveryTime = SubscriberDao.getDeliveryTimeForZipCode(userId, zipCodeId);
+                    String existingDeliveryTime = ZipCodeManager.getDeliveryTimeForZipCode(userId, zipCodeId);
                     if (existingDeliveryTime == null || !existingDeliveryTime.equals(deliveryTime)) {
-                        SubscriberDao.updateZipCodeAndDeliveryTime(userId, zipCodeId, deliveryTime);
+                        ZipCodeManager.updateZipCodeAndDeliveryTime(userId, zipCodeId, deliveryTime);
                     }
                 }
                 
@@ -355,7 +351,6 @@ public class WeatherNotifier {
                 String token = request.headers("Authorization").replace("Bearer ", "");
                 DecodedJWT jwt = JWT.require(Algorithm.HMAC256(secretKey)).build().verify(token);
                 userId = Integer.parseInt(jwt.getSubject());
-
                 logger.info("User ID: {}", userId);
 
                 JsonObject json = parseJsonRequestBody(request);
@@ -363,11 +358,7 @@ public class WeatherNotifier {
                 String oldDeliveryTime = json.get("oldDeliveryTime").getAsString();
                 String newDeliveryTime = json.get("newDeliveryTime").getAsString();
 
-                zipCodeId = SubscriberDao.getZipCodeId(zipCode);
-
-                logger.info("ZipCodeId: {}", zipCodeId);
-
-                SubscriberDao.editZipCodeAndDeliveryTime(userId, zipCode, oldDeliveryTime, newDeliveryTime);
+                ZipCodeManager.editZipCodeAndDeliveryTime(userId, zipCode, oldDeliveryTime, newDeliveryTime);
 
                 response.status(HTTP_OK);
                 return "Delivery time updated successfully.";
@@ -392,17 +383,13 @@ public class WeatherNotifier {
                 String token = request.headers("Authorization").replace("Bearer ", "");
                 DecodedJWT jwt = JWT.require(Algorithm.HMAC256(secretKey)).build().verify(token);
                 userId = Integer.parseInt(jwt.getSubject());
-
                 logger.info("User ID: {}", userId);
 
                 JsonObject json = parseJsonRequestBody(request);
                 zipCode = json.get("zipCode").getAsString();
                 String deliveryTime = json.get("deliveryTime").getAsString();
 
-                zipCodeId = SubscriberDao.getZipCodeId(zipCode);
-                logger.info("Zipcode ID: {}", zipCodeId);
-
-                SubscriberDao.deleteZipCodeAndDeliveryTime(userId, zipCode, deliveryTime);
+                ZipCodeManager.deleteZipCodeAndDeliveryTime(userId, zipCode, deliveryTime);
 
                 response.status(HTTP_OK);
                 return "Zip code and delivery time deleted successfully.";
@@ -431,17 +418,13 @@ public class WeatherNotifier {
                     for (String currentZipCode : zipCodes) {
                         zipCode = currentZipCode;
                         logger.info("Processing Zip Code: {}", zipCode);
-                        cacheKey = CacheUtils.generateCacheKey(userId, zipCode);
+                        cacheKey = CacheUtils.generateCacheKey(zipCode);
                         logger.info("cachekey: {}", cacheKey);
-                        zipCodeId = SubscriberDao.getZipCodeId(zipCode);
-                        logger.info("PCID: {}", zipCodeId);
-                        subscriberId = SubscriberDao.getSubscriberId(userId);
-                        logger.info("SCBR ID: {}", subscriberId);
                         WeatherData weatherData = CacheUtils.retrieveCachedWeatherData(cacheKey, zipCode);
                         if (weatherData == null) {
                             logger.info("weather data retrieval was null, fetching now...");
                             weatherData = WeatherApiService.fetchWeatherData(zipCode, apiKey, userId);
-                            CacheUtils.storeWeatherDataInCache(cacheKey, subscriberId, zipCodeId, weatherData.getLocationName(), 
+                            CacheUtils.storeWeatherDataInCache(cacheKey, weatherData.getLocationName(), 
                                                                weatherData.getDate(), weatherData.getMaxTemperature(), weatherData.getMinTemperature(),
                                                                weatherData.getWeatherCondition(), weatherData.getChanceOfRain(), weatherData.getWindSpeed(), 
                                                                weatherData.getWindDirection(), weatherData.getSunriseTime(), weatherData.getSunsetTime());

@@ -5,7 +5,7 @@
 -- Dumped from database version 15.3
 -- Dumped by pg_dump version 16.0
 
--- Started on 2024-02-09 01:24:08
+-- Started on 2024-02-13 18:43:07
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -29,7 +29,7 @@ CREATE SCHEMA pgagent;
 ALTER SCHEMA pgagent OWNER TO postgres;
 
 --
--- TOC entry 3503 (class 0 OID 0)
+-- TOC entry 3491 (class 0 OID 0)
 -- Dependencies: 8
 -- Name: SCHEMA pgagent; Type: COMMENT; Schema: -; Owner: postgres
 --
@@ -46,7 +46,7 @@ CREATE EXTENSION IF NOT EXISTS adminpack WITH SCHEMA pg_catalog;
 
 
 --
--- TOC entry 3504 (class 0 OID 0)
+-- TOC entry 3492 (class 0 OID 0)
 -- Dependencies: 2
 -- Name: EXTENSION adminpack; Type: COMMENT; Schema: -; Owner: 
 --
@@ -63,7 +63,7 @@ CREATE EXTENSION IF NOT EXISTS pgagent WITH SCHEMA pgagent;
 
 
 --
--- TOC entry 3505 (class 0 OID 0)
+-- TOC entry 3493 (class 0 OID 0)
 -- Dependencies: 3
 -- Name: EXTENSION pgagent; Type: COMMENT; Schema: -; Owner: 
 --
@@ -76,46 +76,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 239 (class 1259 OID 27245)
--- Name: subscribers; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.subscribers (
-    subscriber_id integer NOT NULL,
-    user_id integer,
-    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
-);
-
-
-ALTER TABLE public.subscribers OWNER TO postgres;
-
---
--- TOC entry 238 (class 1259 OID 27244)
--- Name: subscribers_subscriber_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.subscribers_subscriber_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE public.subscribers_subscriber_id_seq OWNER TO postgres;
-
---
--- TOC entry 3506 (class 0 OID 0)
--- Dependencies: 238
--- Name: subscribers_subscriber_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.subscribers_subscriber_id_seq OWNED BY public.subscribers.subscriber_id;
-
-
---
--- TOC entry 243 (class 1259 OID 27266)
+-- TOC entry 241 (class 1259 OID 27266)
 -- Name: user_zip_codes; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -130,7 +91,7 @@ CREATE TABLE public.user_zip_codes (
 ALTER TABLE public.user_zip_codes OWNER TO postgres;
 
 --
--- TOC entry 242 (class 1259 OID 27265)
+-- TOC entry 240 (class 1259 OID 27265)
 -- Name: user_zip_codes_user_zip_code_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -146,8 +107,8 @@ CREATE SEQUENCE public.user_zip_codes_user_zip_code_id_seq
 ALTER SEQUENCE public.user_zip_codes_user_zip_code_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3507 (class 0 OID 0)
--- Dependencies: 242
+-- TOC entry 3494 (class 0 OID 0)
+-- Dependencies: 240
 -- Name: user_zip_codes_user_zip_code_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -155,7 +116,7 @@ ALTER SEQUENCE public.user_zip_codes_user_zip_code_id_seq OWNED BY public.user_z
 
 
 --
--- TOC entry 245 (class 1259 OID 27284)
+-- TOC entry 243 (class 1259 OID 27284)
 -- Name: user_zip_delivery; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -171,7 +132,7 @@ CREATE TABLE public.user_zip_delivery (
 ALTER TABLE public.user_zip_delivery OWNER TO postgres;
 
 --
--- TOC entry 244 (class 1259 OID 27283)
+-- TOC entry 242 (class 1259 OID 27283)
 -- Name: user_zip_delivery_user_zip_delivery_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -187,8 +148,8 @@ CREATE SEQUENCE public.user_zip_delivery_user_zip_delivery_id_seq
 ALTER SEQUENCE public.user_zip_delivery_user_zip_delivery_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3508 (class 0 OID 0)
--- Dependencies: 244
+-- TOC entry 3495 (class 0 OID 0)
+-- Dependencies: 242
 -- Name: user_zip_delivery_user_zip_delivery_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -227,7 +188,7 @@ CREATE SEQUENCE public.users_user_id_seq
 ALTER SEQUENCE public.users_user_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3509 (class 0 OID 0)
+-- TOC entry 3496 (class 0 OID 0)
 -- Dependencies: 236
 -- Name: users_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -236,13 +197,12 @@ ALTER SEQUENCE public.users_user_id_seq OWNED BY public.users.user_id;
 
 
 --
--- TOC entry 246 (class 1259 OID 27305)
+-- TOC entry 244 (class 1259 OID 27305)
 -- Name: weather_cache; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.weather_cache (
     cache_key character varying(255) NOT NULL,
-    subscriber_id integer,
     location_name character varying(100) NOT NULL,
     date date NOT NULL,
     max_temperature integer NOT NULL,
@@ -253,15 +213,14 @@ CREATE TABLE public.weather_cache (
     wind_direction character varying(50),
     sunrise_time character varying,
     sunset_time character varying,
-    expiration timestamp without time zone,
-    zip_code_id integer
+    expiration timestamp without time zone
 );
 
 
 ALTER TABLE public.weather_cache OWNER TO postgres;
 
 --
--- TOC entry 241 (class 1259 OID 27257)
+-- TOC entry 239 (class 1259 OID 27257)
 -- Name: zip_codes; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -275,7 +234,7 @@ CREATE TABLE public.zip_codes (
 ALTER TABLE public.zip_codes OWNER TO postgres;
 
 --
--- TOC entry 240 (class 1259 OID 27256)
+-- TOC entry 238 (class 1259 OID 27256)
 -- Name: zip_codes_zip_code_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -291,8 +250,8 @@ CREATE SEQUENCE public.zip_codes_zip_code_id_seq
 ALTER SEQUENCE public.zip_codes_zip_code_id_seq OWNER TO postgres;
 
 --
--- TOC entry 3510 (class 0 OID 0)
--- Dependencies: 240
+-- TOC entry 3497 (class 0 OID 0)
+-- Dependencies: 238
 -- Name: zip_codes_zip_code_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
@@ -300,15 +259,7 @@ ALTER SEQUENCE public.zip_codes_zip_code_id_seq OWNED BY public.zip_codes.zip_co
 
 
 --
--- TOC entry 3289 (class 2604 OID 27248)
--- Name: subscribers subscriber_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.subscribers ALTER COLUMN subscriber_id SET DEFAULT nextval('public.subscribers_subscriber_id_seq'::regclass);
-
-
---
--- TOC entry 3292 (class 2604 OID 27269)
+-- TOC entry 3285 (class 2604 OID 27269)
 -- Name: user_zip_codes user_zip_code_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -316,7 +267,7 @@ ALTER TABLE ONLY public.user_zip_codes ALTER COLUMN user_zip_code_id SET DEFAULT
 
 
 --
--- TOC entry 3294 (class 2604 OID 27287)
+-- TOC entry 3287 (class 2604 OID 27287)
 -- Name: user_zip_delivery user_zip_delivery_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -324,7 +275,7 @@ ALTER TABLE ONLY public.user_zip_delivery ALTER COLUMN user_zip_delivery_id SET 
 
 
 --
--- TOC entry 3287 (class 2604 OID 27239)
+-- TOC entry 3282 (class 2604 OID 27239)
 -- Name: users user_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -332,7 +283,7 @@ ALTER TABLE ONLY public.users ALTER COLUMN user_id SET DEFAULT nextval('public.u
 
 
 --
--- TOC entry 3291 (class 2604 OID 27260)
+-- TOC entry 3284 (class 2604 OID 27260)
 -- Name: zip_codes zip_code_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -340,16 +291,7 @@ ALTER TABLE ONLY public.zip_codes ALTER COLUMN zip_code_id SET DEFAULT nextval('
 
 
 --
--- TOC entry 3336 (class 2606 OID 27250)
--- Name: subscribers subscribers_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.subscribers
-    ADD CONSTRAINT subscribers_pkey PRIMARY KEY (subscriber_id);
-
-
---
--- TOC entry 3342 (class 2606 OID 27272)
+-- TOC entry 3333 (class 2606 OID 27272)
 -- Name: user_zip_codes user_zip_codes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -358,7 +300,7 @@ ALTER TABLE ONLY public.user_zip_codes
 
 
 --
--- TOC entry 3344 (class 2606 OID 27292)
+-- TOC entry 3335 (class 2606 OID 27292)
 -- Name: user_zip_delivery user_zip_delivery_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -367,7 +309,7 @@ ALTER TABLE ONLY public.user_zip_delivery
 
 
 --
--- TOC entry 3346 (class 2606 OID 27294)
+-- TOC entry 3337 (class 2606 OID 27294)
 -- Name: user_zip_delivery user_zip_delivery_user_id_zip_code_id_delivery_time_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -376,7 +318,7 @@ ALTER TABLE ONLY public.user_zip_delivery
 
 
 --
--- TOC entry 3332 (class 2606 OID 27243)
+-- TOC entry 3325 (class 2606 OID 27243)
 -- Name: users users_phone_number_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -385,7 +327,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 3334 (class 2606 OID 27241)
+-- TOC entry 3327 (class 2606 OID 27241)
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -394,7 +336,7 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 3348 (class 2606 OID 27311)
+-- TOC entry 3339 (class 2606 OID 27311)
 -- Name: weather_cache weather_cache_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -403,7 +345,7 @@ ALTER TABLE ONLY public.weather_cache
 
 
 --
--- TOC entry 3338 (class 2606 OID 27262)
+-- TOC entry 3329 (class 2606 OID 27262)
 -- Name: zip_codes zip_codes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -412,7 +354,7 @@ ALTER TABLE ONLY public.zip_codes
 
 
 --
--- TOC entry 3340 (class 2606 OID 27264)
+-- TOC entry 3331 (class 2606 OID 27264)
 -- Name: zip_codes zip_codes_zip_code_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -421,16 +363,7 @@ ALTER TABLE ONLY public.zip_codes
 
 
 --
--- TOC entry 3349 (class 2606 OID 27251)
--- Name: subscribers subscribers_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.subscribers
-    ADD CONSTRAINT subscribers_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(user_id);
-
-
---
--- TOC entry 3350 (class 2606 OID 27273)
+-- TOC entry 3340 (class 2606 OID 27273)
 -- Name: user_zip_codes user_zip_codes_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -439,7 +372,7 @@ ALTER TABLE ONLY public.user_zip_codes
 
 
 --
--- TOC entry 3351 (class 2606 OID 27278)
+-- TOC entry 3341 (class 2606 OID 27278)
 -- Name: user_zip_codes user_zip_codes_zip_code_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -448,7 +381,7 @@ ALTER TABLE ONLY public.user_zip_codes
 
 
 --
--- TOC entry 3352 (class 2606 OID 27295)
+-- TOC entry 3342 (class 2606 OID 27295)
 -- Name: user_zip_delivery user_zip_delivery_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -457,7 +390,7 @@ ALTER TABLE ONLY public.user_zip_delivery
 
 
 --
--- TOC entry 3353 (class 2606 OID 27300)
+-- TOC entry 3343 (class 2606 OID 27300)
 -- Name: user_zip_delivery user_zip_delivery_zip_code_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -465,25 +398,7 @@ ALTER TABLE ONLY public.user_zip_delivery
     ADD CONSTRAINT user_zip_delivery_zip_code_id_fkey FOREIGN KEY (zip_code_id) REFERENCES public.zip_codes(zip_code_id);
 
 
---
--- TOC entry 3354 (class 2606 OID 27312)
--- Name: weather_cache weather_cache_subscriber_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.weather_cache
-    ADD CONSTRAINT weather_cache_subscriber_id_fkey FOREIGN KEY (subscriber_id) REFERENCES public.subscribers(subscriber_id);
-
-
---
--- TOC entry 3355 (class 2606 OID 27317)
--- Name: weather_cache weather_cache_zip_code_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.weather_cache
-    ADD CONSTRAINT weather_cache_zip_code_id_fkey FOREIGN KEY (zip_code_id) REFERENCES public.zip_codes(zip_code_id);
-
-
--- Completed on 2024-02-09 01:24:09
+-- Completed on 2024-02-13 18:43:07
 
 --
 -- PostgreSQL database dump complete

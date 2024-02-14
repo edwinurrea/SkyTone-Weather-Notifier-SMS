@@ -8,10 +8,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Collections;
-
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
@@ -36,18 +32,6 @@ public class WeatherApiService extends WeatherNotifier {
 
     protected static String buildLocationApiEndpoint(String zipCode, String apiKey) {
         return "http://dataservice.accuweather.com/locations/v1/search?q=" + zipCode + "," + ValidationUtils.getValidCountryCode() + "&apikey=" + apiKey;
-    }
-    
-    protected static String buildAutoLocationApiEndpoint(String query, String apiKey) {
-        if (isNumeric(query)) {
-            return "http://dataservice.accuweather.com/locations/v1/postalcodes/autocomplete?q=" + query + "&apikey=" + apiKey;
-        } else {
-            return "http://dataservice.accuweather.com/locations/v1/cities/autocomplete?q=" + query + "&apikey=" + apiKey;
-        }
-    }
-    
-    private static boolean isNumeric(String str) {
-        return str.matches("\\d+");
     }
 
     protected static class LocationInfo {
@@ -108,50 +92,6 @@ public class WeatherApiService extends WeatherNotifier {
 
         return null;
     }
-    
-    protected static List<LocationInfo> getLocationSuggestions(String query, String apikey) {
-        String locationEndpoint = buildLocationApiEndpoint(query, apikey);
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        
-        try {
-            ClassicHttpResponse response = httpClient.execute(new HttpGet(locationEndpoint));
-            HttpEntity entity = response.getEntity();
-            
-            if (entity != null) {
-                String responseString = EntityUtils.toString(entity);
-                
-                JSONParser parser = new JSONParser();
-                JSONArray jsonArray = (JSONArray) parser.parse(responseString);
-                    
-                List<LocationInfo> suggestions = new ArrayList<>();
-                    
-                for (Object obj : jsonArray) {
-                    JSONObject jsonObject = (JSONObject) obj;
-                    if (jsonObject.containsKey("Key") && jsonObject.containsKey("LocalizedName") && jsonObject.containsKey("AdminstrativeArea")) {
-                        String locationKey = jsonObject.get("Key").toString();
-                        String cityName = jsonObject.get("LocalizedName").toString();
-                        String stateName = ((JSONObject) jsonObject.get("AdminstrativeArea")).get("LocalizedName").toString();
-                        String locationName = cityName + ", " + stateName;
-                        suggestions.add(new LocationInfo(locationKey, locationName));
-                    }
-                }
-                    
-                return suggestions;
-            }
-        } catch (IOException e) {
-            logger.error("Error: Failed to connect to the API. Please check your network connection.", e);
-        } catch (org.json.simple.parser.ParseException | ParseException e) {
-            logger.error("Error: Failed to parse the API response. Please try again later.", e);
-        } finally {
-            try {
-                httpClient.close();
-            } catch (IOException e) {
-                logger.error("Error: Failed to close the HTTP client.", e);
-            }
-        }
-        return Collections.emptyList();
-    }
-
 
     protected static WeatherData fetchWeatherData(String zipCode, String apiKey, int userId) throws SQLException {      
         LocationInfo locationInfo = getLocationInfo(zipCode, apiKey);
@@ -184,10 +124,7 @@ public class WeatherApiService extends WeatherNotifier {
         return null;
     }
     
-    protected static WeatherData parseForecastJson(JSONObject forecastJson, String zipCode, int userId) throws SQLException {
-        int subscriberId = SubscriberDao.getSubscriberId(userId);
-        logger.info("ParseSubscriber ID: {}", subscriberId);
-        
+    protected static WeatherData parseForecastJson(JSONObject forecastJson, String zipCode, int userId) throws SQLException {        
         try {
             String apiKey = DatabaseConnector.config.getProperty("accuweather.api.key");
             LocationInfo locationInfo = getLocationInfo(zipCode, apiKey);
@@ -221,7 +158,7 @@ public class WeatherApiService extends WeatherNotifier {
                 logger.info("Sunrise: {}", sunrise);
                 logger.info("Sunset: {}", sunset);
                 logger.info("Date: {}", Date.valueOf(formattedDate));
-                return new WeatherData(subscriberId, locationName, Date.valueOf(formattedDate),
+                return new WeatherData(locationName, Date.valueOf(formattedDate),
                         maxTemperature, minTemperature, weatherCondition, chanceOfRain,
                         windSpeed, windDirection, sunrise, sunset, zipCode);
             } else {

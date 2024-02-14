@@ -6,7 +6,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public class WeatherData extends WeatherNotifier {
-    private final int subscriberId;
     private final String locationName;
     private final Date date;
     private final int maxTemperature;
@@ -19,10 +18,9 @@ public class WeatherData extends WeatherNotifier {
     private final String sunsetTime;
     private final String zipCode;
     
-    public WeatherData(int subscriberId, String locationName, Date date, int maxTemperature, int minTemperature,
+    public WeatherData(String locationName, Date date, int maxTemperature, int minTemperature,
                        String weatherCondition, int chanceOfRain, String windSpeed, String windDirection,
                        String sunriseTime, String sunsetTime, String zipCode) {
-        this.subscriberId = subscriberId;
         this.locationName = locationName;
         this.date = date;
         this.maxTemperature = maxTemperature;
@@ -34,10 +32,6 @@ public class WeatherData extends WeatherNotifier {
         this.sunriseTime = sunriseTime;
         this.sunsetTime = sunsetTime;
         this.zipCode = zipCode;
-    }
-    
-    public int getSubscriberId() {
-        return subscriberId;
     }
 
     public String getLocationName() {

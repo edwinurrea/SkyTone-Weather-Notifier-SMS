@@ -12,49 +12,8 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SubscriberDao extends WeatherNotifier {
+public class ZipCodeManager extends WeatherNotifier {
     private static final Logger logger = LoggerFactory.getLogger(WeatherNotifier.class);
-
-    protected static void insertSubscriber(int userId) throws SQLException {
-        String dbUrl = DatabaseConnector.config.getProperty("database.url");
-        String dbUser = DatabaseConnector.config.getProperty("database.username");
-        String dbPassword = DatabaseConnector.config.getProperty("database.password");
-        try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword)) {
-            String query = "SELECT COUNT(*) FROM subscribers WHERE user_id = ?";
-            try (PreparedStatement stmt = conn.prepareStatement(query)) {
-                stmt.setInt(1, userId);
-                ResultSet resultSet = stmt.executeQuery();
-                resultSet.next();
-                int count = resultSet.getInt(1);
-                if (count == 0) {
-                    query = "INSERT INTO subscribers (user_id, created_at) VALUES (?,CURRENT_TIMESTAMP)";
-                    try (PreparedStatement insertStmt = conn.prepareStatement(query)) {
-                        insertStmt.setInt(1, userId);
-                        insertStmt.executeUpdate();
-                    }
-                }
-            }
-        }
-    }
-    
-    protected static int getSubscriberId(int userId) throws SQLException {
-        String dbUrl = DatabaseConnector.config.getProperty("database.url");
-        String dbUser = DatabaseConnector.config.getProperty("database.username");
-        String dbPassword = DatabaseConnector.config.getProperty("database.password");
-
-        try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword)) {
-            String query = "SELECT subscriber_id FROM subscribers WHERE user_id = ?";
-            try (PreparedStatement stmt = conn.prepareStatement(query)) {
-                stmt.setInt(1, userId);
-                ResultSet resultSet = stmt.executeQuery();
-                if (resultSet.next()) {
-                    return resultSet.getInt("subscriber_id");
-                }
-            }
-        }
-
-        return -1;
-    }
     
     public static void insertZipCode(String zipCode) throws SQLException {
         String dbUrl = DatabaseConnector.config.getProperty("database.url");
