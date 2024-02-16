@@ -49,7 +49,7 @@ function Dashboard() {
     try {
       const token = localStorage.getItem('token');
       const zipCodeToEdit = zipCodes[editIndex].zipCode;
-      const oldDeliveryTime = zipCodes[editIndex].deliveryTime;
+      const oldDeliveryTime = newDeliveryTime;
       const editedDeliveryTime = zipCodes[editIndex].deliveryTime;
 
       const response = await fetch('/api/editZipCode', {
