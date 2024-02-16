@@ -13,6 +13,7 @@ function Dashboard() {
   const [addError, setAddError] = useState({ zipCode: false, deliveryTime: false });
   const [editIndex, setEditIndex] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [oldEditDeliveryTime, setOldEditDeliveryTime] = useState('');
   const navigate = useNavigate();  
 
   const handleZipCodeChange = (event) => {
@@ -26,6 +27,7 @@ function Dashboard() {
   };
 
   const handleEditZipCode = (index) => {
+    setOldEditDeliveryTime(zipCodes[index].deliveryTime);
     setEditIndex(index);
   };
 
@@ -49,7 +51,7 @@ function Dashboard() {
     try {
       const token = localStorage.getItem('token');
       const zipCodeToEdit = zipCodes[editIndex].zipCode;
-      const oldDeliveryTime = zipCodes[editIndex].deliveryTime;
+      const oldDeliveryTime = oldEditDeliveryTime;
       const editedDeliveryTime = zipCodes[editIndex].deliveryTime;
 
       const response = await fetch('/api/editZipCode', {
@@ -145,6 +147,7 @@ function Dashboard() {
     }
 
     setZipCodes([...zipCodes, newZipCodeData]);
+    localStorage.setItem('zipCodes', JSON.stringify(zipCodes));
     setNewZipCode('');
     setNewDeliveryTime('12:00');
     console.log(newZipCodeData);
