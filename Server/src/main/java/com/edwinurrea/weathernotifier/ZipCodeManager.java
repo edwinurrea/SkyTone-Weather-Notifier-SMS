@@ -88,7 +88,9 @@ public class ZipCodeManager extends WeatherNotifier {
         String checkEntryQuery = "SELECT COUNT(*) FROM user_zip_delivery WHERE user_id = ? AND zip_code_id = (SELECT zip_code_id FROM zip_codes WHERE zip_code = ?) AND delivery_time = ?";
         String updateQuery = "UPDATE user_zip_delivery SET delivery_time = ? WHERE user_id = ? AND zip_code_id = (SELECT zip_code_id FROM zip_codes WHERE zip_code = ?) AND delivery_time = ?";
 
-        try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword); PreparedStatement checkEntryStmt = conn.prepareStatement(checkEntryQuery); PreparedStatement updateStmt = conn.prepareStatement(updateQuery)) {
+        try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword); 
+                PreparedStatement checkEntryStmt = conn.prepareStatement(checkEntryQuery); 
+                PreparedStatement updateStmt = conn.prepareStatement(updateQuery)) {
 
             checkEntryStmt.setInt(1, userId);
             checkEntryStmt.setString(2, zipCode);
@@ -105,9 +107,10 @@ public class ZipCodeManager extends WeatherNotifier {
                 updateStmt.setString(4, oldDeliveryTime);
 
                 updateStmt.executeUpdate();
-            } else {
-                throw new SQLException("Entry does not exist for user, zip code, and delivery time.");
             }
+        } catch (SQLException e) {
+            logger.error("SQL Error while editing the delivery time.", e);
+            throw e;
         }
     }
     
@@ -119,13 +122,11 @@ public class ZipCodeManager extends WeatherNotifier {
         String deleteQuery = "DELETE FROM user_zip_delivery WHERE user_id = ? AND zip_code_id = (SELECT zip_code_id FROM zip_codes WHERE zip_code = ?) AND delivery_time = ?";
         String checkAssociationsQuery = "SELECT COUNT(*) FROM user_zip_delivery WHERE zip_code_id = (SELECT zip_code_id FROM zip_codes WHERE zip_code = ?)";
         String deleteUserZipCodesQuery = "DELETE FROM user_zip_codes WHERE zip_code_id = (SELECT zip_code_id FROM zip_codes WHERE zip_code = ?)";
-        String deleteWeatherCacheQuery = "DELETE FROM weather_cache WHERE zip_code_id = (SELECT zip_code_id FROM zip_codes WHERE zip_code = ?)";
         
         try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword); 
             PreparedStatement deleteStmt = conn.prepareStatement(deleteQuery);
             PreparedStatement checkAssociationsStmt = conn.prepareStatement(checkAssociationsQuery);
-            PreparedStatement deleteUserZipCodesStmt = conn.prepareStatement(deleteUserZipCodesQuery);
-            PreparedStatement deleteWeatherCacheStmt = conn.prepareStatement(deleteWeatherCacheQuery)) {
+            PreparedStatement deleteUserZipCodesStmt = conn.prepareStatement(deleteUserZipCodesQuery)) {
             
             conn.setAutoCommit(false);
 
@@ -145,9 +146,6 @@ public class ZipCodeManager extends WeatherNotifier {
                 if (count == 0) {
                     deleteUserZipCodesStmt.setString(1, zipCode);
                     deleteUserZipCodesStmt.executeUpdate();
-                    
-                    deleteWeatherCacheStmt.setString(1, zipCode);
-                    deleteWeatherCacheStmt.executeUpdate();
                     
                     String deleteZipCodeQuery = "DELETE FROM zip_codes WHERE zip_code = ?";
                     try (PreparedStatement deleteZipCodeStmt = conn.prepareStatement(deleteZipCodeQuery)) {
