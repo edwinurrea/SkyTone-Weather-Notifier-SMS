@@ -40,7 +40,7 @@ public class CacheUtils extends WeatherNotifier{
             }
     
             String query = "SELECT wc.location_name, wc.date, wc.max_temperature, wc.min_temperature, wc.weather_condition, "
-                        +  "wc.chance_of_rain, wc.wind_speed, wc.wind_direction, wc.sunrise_time, wc.sunset_time, "
+                        +  "wc.chance_of_rain, wc.wind_speed, wc.wind_direction, wc.sunrise_time, wc.sunset_time "
                         +  "FROM weather_cache wc "
                         +  "WHERE wc.cache_key = ? AND wc.expiration >= CURRENT_TIMESTAMP";
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
