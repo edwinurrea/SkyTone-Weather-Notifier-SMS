@@ -39,9 +39,10 @@ function Dashboard() {
   
   const handleEditCancel = () => {
     const index = editIndex;
-
+    
     if(index !== null) {
       const editedZipCodes = [...zipCodes];
+      editedZipCodes[index].deliveryTime = oldEditDeliveryTime;
       setZipCodes(editedZipCodes);
       setEditIndex(false);
     }
@@ -101,8 +102,11 @@ function Dashboard() {
         const updatedZipCodes = [...zipCodes];
         updatedZipCodes.splice(index, 1);
         setZipCodes(updatedZipCodes);
-        weatherData.splice(weatherData.find(weatherData => weatherData.zipCode === zipCodeToDelete ), 0)
-        setWeatherData(weatherData);
+        const remainingZipCodes = updatedZipCodes.some(zipCode => zipCode.zipCode === zipCodeToDelete);
+        if (!remainingZipCodes) {
+          const updatedWeatherData = weatherData.filter(data => data.zipCode !== zipCodeToDelete);
+          setWeatherData(updatedWeatherData);
+        }
         if (!updatedZipCodes) {
           setLoading(false);
         }
