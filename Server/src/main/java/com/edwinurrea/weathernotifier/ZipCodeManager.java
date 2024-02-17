@@ -20,7 +20,8 @@ public class ZipCodeManager extends WeatherNotifier {
         String dbUser = DatabaseConnector.config.getProperty("database.username");
         String dbPassword = DatabaseConnector.config.getProperty("database.password");
         String query = "INSERT INTO zip_codes (zip_code) VALUES (?)";
-        try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword); PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword); 
+                PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, zipCode);
             stmt.executeUpdate();
         }
@@ -64,14 +65,15 @@ public class ZipCodeManager extends WeatherNotifier {
         String updateQuery = "INSERT INTO user_zip_delivery (user_id, zip_code_id, delivery_time) " + 
                             "VALUES (?, ?, ?) " +
                             "ON CONFLICT (user_id, zip_code_id, delivery_time) " + 
-                            "DO UPDATE SET user_id = EXCLUDED.user_id ";
+                            "DO NOTHING";
         
-        try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword); PreparedStatement updateStmt = conn.prepareStatement(updateQuery)) {
+        try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword); 
+                PreparedStatement updateStmt = conn.prepareStatement(updateQuery)) {
             updateStmt.setInt(1, userId);
             updateStmt.setInt(2, zipCodeId);
             updateStmt.setString(3, deliveryTime);
             
-            updateStmt.executeQuery();
+            updateStmt.executeUpdate();
 
         } catch(SQLException e) {
             logger.error("Error updating zip code and delivery time.", e);
@@ -168,7 +170,8 @@ public class ZipCodeManager extends WeatherNotifier {
         String dbUser = DatabaseConnector.config.getProperty("database.username");
         String dbPassword = DatabaseConnector.config.getProperty("database.password");
         String query = "SELECT zip_code_id FROM zip_codes WHERE zip_code = ?";
-        try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword); PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword); 
+                PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, zipCode);
             ResultSet resultSet = stmt.executeQuery();
             if (resultSet.next()) {
@@ -186,7 +189,8 @@ public class ZipCodeManager extends WeatherNotifier {
         String dbPassword = DatabaseConnector.config.getProperty("database.password");
 
         String query1 = "SELECT zip_code_id FROM user_zip_codes WHERE user_id = ?";
-        try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword); PreparedStatement stmt1 = conn.prepareStatement(query1)) {
+        try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword); 
+                PreparedStatement stmt1 = conn.prepareStatement(query1)) {
             stmt1.setInt(1, userId);
             ResultSet resultSet1 = stmt1.executeQuery();
 
@@ -213,7 +217,8 @@ public class ZipCodeManager extends WeatherNotifier {
         String dbUser = DatabaseConnector.config.getProperty("database.username");
         String dbPassword = DatabaseConnector.config.getProperty("database.password");
         String query = "SELECT delivery_time FROM user_zip_delivery WHERE user_id = ? AND zip_code_id = ?";
-        try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword); PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword); 
+                PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, userId);
             stmt.setInt(2, zipCodeId);
             ResultSet resultSet = stmt.executeQuery();
@@ -238,7 +243,8 @@ public class ZipCodeManager extends WeatherNotifier {
                 + "AND upc.zip_code_id = upd.zip_code_id "
                 + "WHERE upc.user_id = ?";
 
-        try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword); PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword); 
+                PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setInt(1, userId);
             ResultSet resultSet = stmt.executeQuery();
