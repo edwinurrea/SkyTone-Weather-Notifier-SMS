@@ -36,8 +36,6 @@ function Login() {
   const handleLogin = async (event) => {
     event.preventDefault();
 
-    console.log("Phone Number: ", phoneNumber);
-
     try {
       const response = await fetch('/api/login', {
         method: 'POST',
