@@ -3,6 +3,8 @@ import './Dashboard.css';
 import Logo from './images/cloud-phone.png';
 import Pencil from './images/newpencil.png';
 import Trash from './images/trashcan.png';
+import Cancel from './images/cancel-button.png';
+import Confirm from './images/confirm-button.png';
 import { Link, useNavigate } from 'react-router-dom';
 
 function Dashboard() {
@@ -12,6 +14,7 @@ function Dashboard() {
   const [weatherData, setWeatherData] = useState([]);
   const [addError, setAddError] = useState({ zipCode: false, deliveryTime: false });
   const [editIndex, setEditIndex] = useState(false);
+  const [deleteIndex, setDeleteIndex] = useState(false);
   const [loading, setLoading] = useState(true);
   const [oldEditDeliveryTime, setOldEditDeliveryTime] = useState('');
   const navigate = useNavigate();  
@@ -83,11 +86,27 @@ function Dashboard() {
     }
   };
 
-  const handleDeleteZipCode = async (index) => {
+  const handleDeleteZipCode = (index) => {
+    setOldEditDeliveryTime(zipCodes[index].deliveryTime);
+    setDeleteIndex(index);
+  };
+
+  const handleDeleteCancel = () => {
+    const index = deleteIndex;
+    
+    if(index !== null) {
+      const editedZipCodes = [...zipCodes];
+      editedZipCodes[index].deliveryTime = oldEditDeliveryTime;
+      setZipCodes(editedZipCodes);
+      setDeleteIndex(false);
+    }
+  };
+
+  const handleDeleteConfirm = async () => {
     try {
       const token = localStorage.getItem('token');
-      const zipCodeToDelete = zipCodes[index].zipCode;
-      const deliveryTimeToDelete = zipCodes[index].deliveryTime;
+      const zipCodeToDelete = zipCodes[deleteIndex].zipCode;
+      const deliveryTimeToDelete = zipCodes[deleteIndex].deliveryTime;
   
       const response = await fetch('/api/deleteZipCode', {
         method: 'POST',
@@ -100,7 +119,7 @@ function Dashboard() {
   
       if (response.ok) {
         const updatedZipCodes = [...zipCodes];
-        updatedZipCodes.splice(index, 1);
+        updatedZipCodes.splice(deleteIndex, 1);
         setZipCodes(updatedZipCodes);
         const remainingZipCodes = updatedZipCodes.some(zipCode => zipCode.zipCode === zipCodeToDelete);
         if (!remainingZipCodes) {
@@ -419,10 +438,43 @@ function Dashboard() {
                     )}
                   </td>
                   <td>
-                    {editIndex === index ? (
+                    {editIndex === index || deleteIndex === index ? (
                       <>
-                        <button onClick={handleEditCancel}>Cancel</button>
-                        <button onClick={handleEditConfirm}>Confirm</button>
+                        {deleteIndex === index ? (
+                          <>
+                            <p className="delete-text">DELETE?</p>
+                            <div className="cancel-confirm-container">
+                              <img 
+                                src={Cancel} 
+                                alt="Cancel" 
+                                className="cancel-icon"
+                                onClick={handleDeleteCancel} 
+                              />
+                              <img 
+                                src={Confirm} 
+                                alt="Confirm" 
+                                className="confirm-icon"
+                                onClick={handleDeleteConfirm}
+                              />
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <p className="edit-text">Edit?</p>
+                            <div className="cancel-confirm-container">
+                              <img 
+                                src={Cancel} 
+                                alt="Cancel" 
+                                className="cancel-icon"
+                                onClick={handleEditCancel}/>
+                              <img 
+                                src={Confirm} 
+                                alt="Confirm" 
+                                className="confirm-icon"
+                                onClick={handleEditConfirm}/>
+                            </div>
+                          </>
+                        )}
                       </>
                     ) : (
                       <>

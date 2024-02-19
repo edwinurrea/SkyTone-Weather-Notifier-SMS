@@ -183,6 +183,36 @@ html {
   -webkit-text-fill-color: #333333;
 }
 
+.delete-text, .edit-text {
+  position: relative;
+  top: -15px;
+  margin-bottom: -8px;
+  font: 15px "JetBrains Mono", monospace;
+  font-weight: bold;
+  text-align: center;
+}
+
+.delete-text{
+  color: red;
+}
+
+.cancel-confirm-container{
+  display: flex;
+  justify-content: space-around;
+}
+
+.cancel-icon{
+  max-width: 30px;
+  max-height: 30px;
+  cursor: pointer;
+}
+
+.confirm-icon{
+  max-width: 30px;
+  max-height: 30px;
+  cursor: pointer;
+}
+
 .edit-delete-container {
   display: flex;
   flex-direction: row;
