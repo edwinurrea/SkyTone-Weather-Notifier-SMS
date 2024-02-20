@@ -11,7 +11,6 @@ function ResetPassword() {
   useEffect(() => {
     const phoneNumber = sessionStorage.getItem('phoneNumber');
     if (phoneNumber) {
-      console.log('Phone Number from Session:', phoneNumber);
     }
   }, []);
 
@@ -47,7 +46,6 @@ function ResetPassword() {
       
           if (data.zipCodes !== null) {
           localStorage.setItem('zipCodes', JSON.stringify(data.zipCodes));
-          console.log(data.zipCodes);
           }
     
           navigate('/dashboard'); 

@@ -19,8 +19,6 @@ public class TwilioService extends WeatherNotifier {
         String ACCOUNT_SID = DatabaseConnector.config.getProperty("twilio.account.sid");
         String AUTH_TOKEN = DatabaseConnector.config.getProperty("twilio.auth.token");
         String VERIFY_SERVICE_SID = DatabaseConnector.config.getProperty("twilio.verify.sid");
-
-        logger.info("Twilio Formatted Phone Number: {}", formattedPhoneNumber);
         
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
 
@@ -57,7 +55,6 @@ public class TwilioService extends WeatherNotifier {
         String from = DatabaseConnector.config.getProperty("twilio.default.from.number");
 
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
-        Message twilioMessage = Message.creator(new PhoneNumber(formattedPhoneNumber), new PhoneNumber(from), message).create();
-        logger.info("Message SID: {}", twilioMessage.getSid());
+        Message.creator(new PhoneNumber(formattedPhoneNumber), new PhoneNumber(from), message).create();
     }
 }

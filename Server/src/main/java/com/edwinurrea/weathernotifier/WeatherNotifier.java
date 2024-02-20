@@ -62,14 +62,11 @@ public class WeatherNotifier {
 
                 phoneNumber = json.get("phoneNumber").getAsString();
                 password = json.get("password").getAsString();
-                logger.info("Phone Number: {}", phoneNumber);
 
                 countryCode = ValidationUtils.getValidCountryCode();
                 formattedPhoneNumber = ValidationUtils.formatToE164(phoneNumber, countryCode);
                 userId = UserManager.getUserId(formattedPhoneNumber);
                 request.session().attribute("formattedPhoneNumber", formattedPhoneNumber);
-                logger.info("Formatted: {}", formattedPhoneNumber);
-                logger.info(" UserId: {}", userId);
 
                 if (userId != -1 && UserManager.isUserAuthenticated(formattedPhoneNumber, password)) {
                     String token = UserManager.authenticateAndGetToken(formattedPhoneNumber, password, userId);
@@ -90,7 +87,6 @@ public class WeatherNotifier {
                                 zipCodesArray.add(zipCodeObject);
                             }
                             responseJson.add("zipCodes", zipCodesArray);
-                            logger.info("ZipCodesArrayLogin: {}", zipCodesArray);
                         }
 
                         response.status(HTTP_OK);
@@ -117,7 +113,6 @@ public class WeatherNotifier {
                 JsonObject json = parseJsonRequestBody(request);
 
                 phoneNumber = json.get("phoneNumber").getAsString();
-                logger.info("Phone Number: {}", phoneNumber);
 
                 if (!ValidationUtils.isValidPhoneNumber(phoneNumber)) {
                     response.status(HTTP_BAD_REQUEST);
@@ -128,7 +123,6 @@ public class WeatherNotifier {
                     request.session().attribute("phoneNumber", phoneNumber);
                     countryCode = ValidationUtils.getValidCountryCode();
                     formattedPhoneNumber = ValidationUtils.formatToE164(phoneNumber, countryCode);
-                    logger.info("Formatted: {}", formattedPhoneNumber);
                 }
 
                 if (UserManager.getUserId(formattedPhoneNumber) != -1) {
@@ -203,7 +197,6 @@ public class WeatherNotifier {
 
                 phoneNumber = json.get("phoneNumber").getAsString();
                 password = json.get("password").getAsString();
-                logger.info("Phone Number: {}", phoneNumber);
 
                 if (!ValidationUtils.isValidPhoneNumber(phoneNumber) || !ValidationUtils.isValidPassword(password)) {
                     response.status(HTTP_BAD_REQUEST);
@@ -213,7 +206,6 @@ public class WeatherNotifier {
                 } else {
                     countryCode = ValidationUtils.getValidCountryCode();
                     formattedPhoneNumber = ValidationUtils.formatToE164(phoneNumber, countryCode);
-                    logger.info("Formatted: {}", formattedPhoneNumber);
                 }
 
                 if (UserManager.isUserAuthenticated(formattedPhoneNumber, password)) {
@@ -275,7 +267,6 @@ public class WeatherNotifier {
                 JsonObject json = parseJsonRequestBody(request);
 
                 phoneNumber = json.get("phoneNumber").getAsString();
-                logger.info("Phone Number: {}", phoneNumber);
 
                 if (!ValidationUtils.isValidPhoneNumber(phoneNumber)) {
                     response.status(HTTP_BAD_REQUEST);
@@ -300,19 +291,15 @@ public class WeatherNotifier {
                 String secretKey = DatabaseConnector.config.getProperty("jwt.secret.key");
                 formattedPhoneNumber = request.session().attribute("formattedPhoneNumber");
                 userId = UserManager.getUserId(formattedPhoneNumber);
-                logger.info("User ID: {}", userId);
-                logger.info("formatted Phone Number: {}", formattedPhoneNumber);
                 String token = request.headers("Authorization").replace("Bearer ", "");
                 DecodedJWT jwt = JWT.require(Algorithm.HMAC256(secretKey)).build().verify(token);
                 userId = Integer.parseInt(jwt.getSubject());
-                logger.info("User ID: {}", userId);
 
                 JsonObject json = parseJsonRequestBody(request);
                 zipCode = json.get("zipCode").getAsString();
                 String deliveryTime = json.get("deliveryTime").getAsString();
 
                 zipCodeId = ZipCodeManager.getZipCodeId(zipCode);
-                logger.info("ZipCodeId: {}", zipCodeId);
 
                 if (zipCodeId == -1) {
                     ZipCodeManager.insertZipCode(zipCode);
@@ -325,7 +312,6 @@ public class WeatherNotifier {
                     }
                 }
                 
-                logger.info("Zipcode: {}", zipCode + "Delivery Time: {}", deliveryTime);
                 request.session().attribute("zipCode", zipCode);
                 request.session().attribute("deliveryTime", deliveryTime);
                 response.status(HTTP_OK);
@@ -346,12 +332,9 @@ public class WeatherNotifier {
                 String secretKey = DatabaseConnector.config.getProperty("jwt.secret.key");
                 formattedPhoneNumber = request.session().attribute("formattedPhoneNumber");
                 userId = UserManager.getUserId(formattedPhoneNumber);
-                logger.info("UserID: {}", userId);
-                logger.info("FormattedPhoneNumber: {}", formattedPhoneNumber);
                 String token = request.headers("Authorization").replace("Bearer ", "");
                 DecodedJWT jwt = JWT.require(Algorithm.HMAC256(secretKey)).build().verify(token);
                 userId = Integer.parseInt(jwt.getSubject());
-                logger.info("User ID: {}", userId);
 
                 JsonObject json = parseJsonRequestBody(request);
                 zipCode = json.get("zipCode").getAsString();
@@ -378,12 +361,9 @@ public class WeatherNotifier {
                 String secretKey = DatabaseConnector.config.getProperty("jwt.secret.key");
                 formattedPhoneNumber = request.session().attribute("formattedPhoneNumber");
                 userId = UserManager.getUserId(formattedPhoneNumber);
-                logger.info("User ID: {}", userId);
-                logger.info("FormattedPhoneNumber: {}", formattedPhoneNumber);
                 String token = request.headers("Authorization").replace("Bearer ", "");
                 DecodedJWT jwt = JWT.require(Algorithm.HMAC256(secretKey)).build().verify(token);
                 userId = Integer.parseInt(jwt.getSubject());
-                logger.info("User ID: {}", userId);
 
                 JsonObject json = parseJsonRequestBody(request);
                 zipCode = json.get("zipCode").getAsString();
@@ -408,7 +388,6 @@ public class WeatherNotifier {
             try {
                 String apiKey = DatabaseConnector.config.getProperty("accuweather.api.key");
                 String[] zipCodes = request.queryParamsValues("zipCodes");
-                logger.info("ZipCodesArray: {}", Arrays.toString(zipCodes));
 
                 List<WeatherData> weatherDataList = new ArrayList<>();
 
@@ -419,7 +398,6 @@ public class WeatherNotifier {
                         zipCode = currentZipCode;
                         logger.info("Processing Zip Code: {}", zipCode);
                         cacheKey = CacheUtils.generateCacheKey(zipCode);
-                        logger.info("cachekey: {}", cacheKey);
                         WeatherData weatherData = CacheUtils.retrieveCachedWeatherData(cacheKey, zipCode);
                         if (weatherData == null) {
                             logger.info("weather data retrieval was null, fetching now...");
@@ -460,7 +438,6 @@ public class WeatherNotifier {
     
     private static JsonObject parseJsonRequestBody(Request request) {
         String requestBody = request.body();
-        logger.info("Request Body: {}", requestBody);
         return JsonParser.parseString(requestBody).getAsJsonObject();
     }
 }

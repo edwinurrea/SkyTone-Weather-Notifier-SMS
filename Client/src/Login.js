@@ -54,7 +54,6 @@ function Login() {
       
         if (data.zipCodes !== null) {
           localStorage.setItem('zipCodes', JSON.stringify(data.zipCodes));
-          console.log(data.zipCodes);
         }
 
         navigate('/dashboard'); 

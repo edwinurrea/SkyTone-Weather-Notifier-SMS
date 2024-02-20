@@ -173,7 +173,6 @@ function Dashboard() {
     localStorage.setItem('zipCodes', JSON.stringify(zipCodes));
     setNewZipCode('');
     setNewDeliveryTime('12:00');
-    console.log(newZipCodeData);
 
     try {
       const token = localStorage.getItem('token');
@@ -197,7 +196,6 @@ function Dashboard() {
         } else {
 
         const zipCodesQueryParam = `zipCodes=${newZipCodeData.zipCode}`;
-        console.log(zipCodesQueryParam)
         fetch(`/api/weather?${zipCodesQueryParam}`, {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -205,7 +203,7 @@ function Dashboard() {
         })
           .then(response => response.json())
           .then(data => {
-            console.log("Received Data:", data);
+            console.log("Received Data.");
 
             const newWeatherData = data.map(weatherInfo => ({
               locationName: weatherInfo.locationName,
@@ -273,12 +271,10 @@ function Dashboard() {
         return;
       } else {
         const storedZipCodes = JSON.parse(storedZipCodesString);
-        console.log("Stored Zip Codes:", storedZipCodes);
         setZipCodes([...storedZipCodes]);
 
         const uniqueZipCodes = [...new Set(storedZipCodes.map(data => data.zipCode))];
         const zipCodesQueryParam = uniqueZipCodes.map(uniqueZipCode => `zipCodes=${uniqueZipCode}`).join('&');
-        console.log("Zip Codes Query Param:", zipCodesQueryParam);
 
         if (uniqueZipCodes.length > 0) {
           fetch(`/api/weather?${zipCodesQueryParam}`, {
@@ -288,7 +284,7 @@ function Dashboard() {
           })
             .then(response => response.json())
             .then(data => {
-              console.log("Received Data:", data);
+              console.log("Received Data.");
 
               const newWeatherData = data.map(weatherInfo => ({
                 locationName: weatherInfo.locationName,

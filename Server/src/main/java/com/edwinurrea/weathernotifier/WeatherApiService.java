@@ -129,11 +129,8 @@ public class WeatherApiService extends WeatherNotifier {
             String apiKey = DatabaseConnector.config.getProperty("accuweather.api.key");
             LocationInfo locationInfo = getLocationInfo(zipCode, apiKey);
             
-            logger.info("Location Info: {}", locationInfo);
-            
             if (locationInfo != null) {
                 String locationName = locationInfo.getLocationName();
-                logger.info("Location Name: {}", locationName);
                 LocalDate currentDate = LocalDate.now();
                 String formattedDate = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
@@ -149,15 +146,6 @@ public class WeatherApiService extends WeatherNotifier {
                 String sunrise = DateTimeUtils.extractSunrise(dayForecast);
                 String sunset = DateTimeUtils.extractSunset(dayForecast);
 
-                logger.info("Max Temperature: {}", maxTemperature);
-                logger.info("Min Temperature: {}", minTemperature);
-                logger.info("Weather Condition: {}", weatherCondition);
-                logger.info("Chance of Rain: {}", chanceOfRain);
-                logger.info("Wind Speed: {}", windSpeed);
-                logger.info("Wind Direction: {}", windDirection);
-                logger.info("Sunrise: {}", sunrise);
-                logger.info("Sunset: {}", sunset);
-                logger.info("Date: {}", Date.valueOf(formattedDate));
                 return new WeatherData(locationName, Date.valueOf(formattedDate),
                         maxTemperature, minTemperature, weatherCondition, chanceOfRain,
                         windSpeed, windDirection, sunrise, sunset, zipCode);

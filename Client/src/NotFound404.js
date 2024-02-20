@@ -8,7 +8,7 @@ function NotFound404() {
   const navigate = useNavigate();
 
 	const handleReturn = () => {
-		console.log('Return button clicked');
+		console.log('Return button clicked.');
 		navigate('./');
 	}
 

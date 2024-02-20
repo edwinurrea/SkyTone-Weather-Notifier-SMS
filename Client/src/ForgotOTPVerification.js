@@ -22,7 +22,6 @@ function OTPVerification() {
 
       if (response.ok) {
         const data = await response.text();
-        console.log(data);
         navigate('/reset');
       } else {
         const errorData = await response.json();
@@ -45,7 +44,7 @@ function OTPVerification() {
 
       if (response.ok) {
         setResendClicked(true);
-        console.log('Verification code resent');
+        console.log('Verification code resent.');
       } else {
         const errorData = await response.json();
         console.error(errorData.error);

@@ -7,12 +7,12 @@ function FrontPage() {
   const navigate = useNavigate();
 
   const handleLoginClick = () => {
-    console.log('Login button clicked');
+    console.log('Login button clicked.');
     navigate('/login');
   };
   
   const handleSignUpClick = () => {
-    console.log('Sign Up button clicked');
+    console.log('Sign Up button clicked.');
     navigate('/signup');
   };
   

@@ -22,7 +22,6 @@ function OTPVerification() {
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem('token', data.token);
-        console.log(data);
         navigate('/dashboard')
       } else {
         throw new Error('Network response was not ok');
