@@ -14,8 +14,25 @@ function Login() {
   const [maskedPassword, setMaskedPassword] = useState('');
   const navigate = useNavigate();
 
+  const formatPhoneNumber = (input) => {
+    const phoneNumberDigits = input.replace(/\D/g, '');
+    let formattedNumber = '';
+    if (phoneNumberDigits.length > 0) {
+     formattedNumber += `(${phoneNumberDigits.slice(0, 3)}`;
+    }
+    if (phoneNumberDigits.length > 3) {
+      formattedNumber += `) ${phoneNumberDigits.slice(3, 6)}`;
+    }
+    if (phoneNumberDigits.length > 6) {
+      formattedNumber += `-${phoneNumberDigits.slice(6, 10)}`;
+    }    
+    return formattedNumber;
+  }
+
   const handlePhoneNumberChange = (event) => {
-    setPhoneNumber(event.target.value);
+    const input = event.target.value;
+    const formattedInput = formatPhoneNumber(input);
+    setPhoneNumber(formattedInput);
   };
 
   const handlePasswordChange = (event) => {
@@ -43,7 +60,7 @@ function Login() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          phoneNumber: phoneNumber,
+          phoneNumber: phoneNumber.replace(/\D/g, ''),
           password: password
         }),
       });
@@ -81,7 +98,7 @@ function Login() {
             type="tel" 
             id="phone" 
             name="phone" 
-            placeholder="e.g. 1234567890" 
+            placeholder="(123) 456-7890" 
             value={phoneNumber}
             onChange={handlePhoneNumberChange}
             style={{ borderColor: loginErrorPresent ? 'red' : 'initial' }}

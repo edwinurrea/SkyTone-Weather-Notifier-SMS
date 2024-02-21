@@ -7,6 +7,27 @@ function ForgotPassword() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const navigate = useNavigate();
 
+  const formatPhoneNumber = (input) => {
+    const phoneNumberDigits = input.replace(/\D/g, '');
+    let formattedNumber = '';
+    if (phoneNumberDigits.length > 0) {
+     formattedNumber += `(${phoneNumberDigits.slice(0, 3)}`;
+    }
+    if (phoneNumberDigits.length > 3) {
+      formattedNumber += `) ${phoneNumberDigits.slice(3, 6)}`;
+    }
+    if (phoneNumberDigits.length > 6) {
+      formattedNumber += `-${phoneNumberDigits.slice(6, 10)}`;
+    }    
+    return formattedNumber;
+  }
+
+  const handlePhoneNumberChange = (event) => {
+    const input = event.target.value;
+    const formattedInput = formatPhoneNumber(input);
+    setPhoneNumber(formattedInput);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -16,12 +37,12 @@ function ForgotPassword() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ phoneNumber }),
+        body: JSON.stringify({ phoneNumber: phoneNumber.replace(/\D/g, '') }),
       });
 
       if (response.ok) {
         const data = await response.text();
-        sessionStorage.setItem("phoneNumber", phoneNumber)
+        sessionStorage.setItem("phoneNumber", phoneNumber.replace(/\D/g, ''))
         console.log(data);
         navigate(`/forgotOTP`);
       } else {
@@ -49,9 +70,9 @@ function ForgotPassword() {
             type="tel" 
             id="phoneNumber" 
             name="phoneNumber" 
-            placeholder="e.g. 1234567890" 
+            placeholder="(123) 456-7890" 
             value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
+            onChange={(handlePhoneNumberChange)}
           />
         </div>
         <button type="submit" className="forgot-password-button">Forgot Password</button>
