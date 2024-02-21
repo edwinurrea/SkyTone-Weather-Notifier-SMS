@@ -11,7 +11,7 @@
 	justify-content: center;
 }
 
-.not-found-description h1{
+.not-found-description h1 {
 	display: flex;
 	justify-content: center;
   font: 22px "JetBrains Mono", monospace;
@@ -19,7 +19,7 @@
 	margin-top: 0px;
 }
 
-.not-found-description p{
+.not-found-description p {
 	display: flex;
 	justify-content: center;
   font: 16px "JetBrains Mono", monospace;

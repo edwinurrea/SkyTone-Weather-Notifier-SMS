@@ -206,22 +206,22 @@ html {
   text-align: center;
 }
 
-.delete-text{
+.delete-text {
   color: red;
 }
 
-.cancel-confirm-container{
+.cancel-confirm-container {
   display: flex;
   justify-content: space-around;
 }
 
-.cancel-icon{
+.cancel-icon {
   max-width: 30px;
   max-height: 30px;
   cursor: pointer;
 }
 
-.confirm-icon{
+.confirm-icon {
   max-width: 30px;
   max-height: 30px;
   cursor: pointer;
