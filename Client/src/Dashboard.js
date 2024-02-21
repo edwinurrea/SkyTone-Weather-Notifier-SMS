@@ -5,6 +5,7 @@ import Pencil from './images/newpencil.png';
 import Trash from './images/trashcan.png';
 import Cancel from './images/cancel-button.png';
 import Confirm from './images/confirm-button.png';
+import AccuWeatherAttribution from './images/AW_RGB_R.png';
 import { Link, useNavigate } from 'react-router-dom';
 
 function Dashboard() {
@@ -325,6 +326,12 @@ function Dashboard() {
       </Link>
       </div>
       <h2>Welcome to Your Dashboard</h2>
+      <div className="AccuWeather-Attribution">
+        <h5>Data provided by:</h5>
+        <Link to="http://www.accuweather.com">
+          <img src={AccuWeatherAttribution} alt="AccuWeather Logo" />
+        </Link>
+      </div>
       <div className="weather-section">
       <div className="preview-indicator">Live Preview</div>
       <div className="weather-messages">
