@@ -16,7 +16,6 @@ import com.google.gson.JsonSyntaxException;
 import java.sql.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -109,6 +108,7 @@ public class WeatherNotifier {
         });
 
         post("/api/forgotpassword", (Request request, Response response) -> {
+            logger.info("Received forgotten password request.");
             try {
                 JsonObject json = parseJsonRequestBody(request);
 
@@ -143,6 +143,7 @@ public class WeatherNotifier {
         });
 
         post("/api/forgotpasswordverify", (Request request, Response response) -> {
+            logger.info("Received forgotten password verification request.");
             try {
                 JsonObject json = parseJsonRequestBody(request);
                 verificationCode = json.get("verificationCode").getAsString();
@@ -169,6 +170,7 @@ public class WeatherNotifier {
         });
 
         post("/api/resetpassword", (Request request, Response response) -> {
+            logger.info("Received reset password request.");
             try {
                 JsonObject json = parseJsonRequestBody(request);
 
@@ -192,6 +194,7 @@ public class WeatherNotifier {
         });
 
         post("/api/signup", (Request request, Response response) -> {
+            logger.info("Received sign-up request.");
             try {
                 JsonObject json = parseJsonRequestBody(request);
 
@@ -226,6 +229,7 @@ public class WeatherNotifier {
         });
 
         post("/api/verify", (Request request, Response response) -> {
+            logger.info("Received verification request.");
             try {
                 JsonObject json = parseJsonRequestBody(request);
                 verificationCode = json.get("verificationCode").getAsString();
@@ -263,6 +267,7 @@ public class WeatherNotifier {
         });
 
         post("/api/forgotpasswordresend", (Request request, Response response) -> {
+            logger.info("Received forgotten password verification resend request");
             try {
                 JsonObject json = parseJsonRequestBody(request);
 
@@ -287,6 +292,7 @@ public class WeatherNotifier {
         });
 
         post("/api/addZipCode", (Request request, Response response) -> {
+            logger.info("Received add a zip code request.");
             try {
                 String secretKey = DatabaseConnector.config.getProperty("jwt.secret.key");
                 formattedPhoneNumber = request.session().attribute("formattedPhoneNumber");
@@ -328,6 +334,7 @@ public class WeatherNotifier {
         });
 
         post("/api/editZipCode", (Request request, Response response) -> {
+            logger.info("Received edit a zip code request");
             try {
                 String secretKey = DatabaseConnector.config.getProperty("jwt.secret.key");
                 formattedPhoneNumber = request.session().attribute("formattedPhoneNumber");
@@ -357,6 +364,7 @@ public class WeatherNotifier {
         });
 
         post("/api/deleteZipCode", (Request request, Response response) -> {
+            logger.info("Received delete a zip code request");
             try {
                 String secretKey = DatabaseConnector.config.getProperty("jwt.secret.key");
                 formattedPhoneNumber = request.session().attribute("formattedPhoneNumber");
@@ -385,6 +393,7 @@ public class WeatherNotifier {
         });
 
         get("/api/weather", (Request request, Response response) -> {
+            logger.info("Received weather data request");
             try {
                 String apiKey = DatabaseConnector.config.getProperty("accuweather.api.key");
                 String[] zipCodes = request.queryParamsValues("zipCodes");
