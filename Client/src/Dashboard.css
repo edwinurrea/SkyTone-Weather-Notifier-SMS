@@ -165,7 +165,7 @@ html {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 5px;
   margin-left: -10px;
   margin-right: -10px;
   padding: 20px;
@@ -247,7 +247,7 @@ html {
 }
 
 .logout-button button {
-  margin-top: 20px;
+  margin-top: 15px;
   margin-bottom: 15px;
   padding: 10px 20px;
   background-color: #F05514;
