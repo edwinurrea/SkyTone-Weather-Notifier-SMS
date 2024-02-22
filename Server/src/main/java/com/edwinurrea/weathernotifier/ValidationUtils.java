@@ -10,6 +10,7 @@ public class ValidationUtils extends WeatherNotifier {
 
     protected static boolean isValidPhoneNumber(String phoneNumber) {
         if (phoneNumber == null) {
+            logger.warn("Phone number is null.");
             return false;
         }
         String phoneNumberPattern = "\\d{10}";
@@ -18,6 +19,7 @@ public class ValidationUtils extends WeatherNotifier {
     
     protected static boolean isValidPassword(String password) {
         if (password == null) {
+            logger.warn("Password is null.");
             return false;
         }
         return password.length() >= 8;
