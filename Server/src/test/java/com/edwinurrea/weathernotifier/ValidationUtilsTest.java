@@ -26,7 +26,7 @@ public class ValidationUtilsTest {
     
     @Test
     public void testIsValidPassword_ValidPassword() {
-        String password = "testpass";
+        String password = "testpassword";
         boolean result = ValidationUtils.isValidPassword(password);
         assertTrue(result);
     }
