@@ -154,6 +154,10 @@ html {
   cursor: pointer;
 }
 
+.zip-code-form button:hover {
+  background-color: #D94500;
+}
+
 .error-message {
   color: red;
   font-size: 12px;
@@ -255,4 +259,8 @@ html {
   border: 2px solid black;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.logout-button button:hover {
+  background-color: #D94500;
 }

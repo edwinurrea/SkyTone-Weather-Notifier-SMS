@@ -60,19 +60,15 @@ input {
 }
 
 .otp-verification-page .verify-button:hover {
-  background-color: #F05514;
+  background-color: #D94500;
 }
  
-.otp-verification-page button {
+.otp-verification-page .resend-button {
   background-color: transparent;
   color: #F05514;
   border: none;
   cursor: pointer;
   font: 14px "JetBrains Mono", monospace;
-}
-
-.otp-verification-page button:hover {
-  background-color: #F05514;
 }
 
 .otp-verification-page p {
@@ -81,6 +77,10 @@ input {
   margin-bottom: -25px;
 }
   
+.otp-verification-page .resend-button:hover {
+  text-decoration: underline;
+}
+
 a {
   color: #F05514;
   text-decoration: none;

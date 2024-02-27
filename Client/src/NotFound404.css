@@ -42,3 +42,7 @@
   color: #FFFFFF;
 	margin-top: 60px;
 } 
+
+.return-front-button:hover {
+  background-color: #D94500;
+}

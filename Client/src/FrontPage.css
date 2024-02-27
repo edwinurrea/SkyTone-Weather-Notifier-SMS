@@ -60,3 +60,11 @@ h1, p {
   margin-left: 10px;
   background-color: #F05514;
 }
+
+.fp-login-button:hover {
+  background-color: #2C2B2A;
+}
+
+.fp-signup-button:hover {
+  background-color: #D94500;
+}

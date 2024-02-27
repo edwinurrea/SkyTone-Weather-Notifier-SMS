@@ -81,7 +81,7 @@ function OTPVerification() {
       <p>Didn't receive the code? {' '} {resendClicked ? (
         <span>Code resent.</span>
       ) : ( 
-        <button onClick={handleResend}>Resend</button>
+        <button className="resend-button" onClick={handleResend}>Resend</button>
       )}
       </p>
     </div>

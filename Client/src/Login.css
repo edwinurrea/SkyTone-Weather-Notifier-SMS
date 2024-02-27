@@ -68,6 +68,10 @@ input {
   color: #F05514;
   cursor: pointer;
 }
+
+.li-forgot-password-button:hover {
+  text-decoration: underline;
+}
   
 .li-continue-button {
   display: block;
@@ -85,7 +89,7 @@ input {
 }
   
 .li-continue-button:hover {
-  background-color: #F05514;
+  background-color: #D94500;
 }
   
 .login-page p {
