@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 function ResetPassword() {
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,7 +20,7 @@ function ResetPassword() {
 
     try {
       if (newPassword !== confirmNewPassword) {
-        console.error("Passwords do not match");
+        setPasswordError("Passwords do not match");
         return;
       }
 
@@ -81,6 +82,7 @@ function ResetPassword() {
             placeholder="Enter your new password" 
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
+            style={{ borderColor: passwordError ? 'red' : 'initial' }}
           />
         </div>
         <div className="reset-form-group">
@@ -92,7 +94,9 @@ function ResetPassword() {
             placeholder="Confirm your new password" 
             value={confirmNewPassword}
             onChange={(e) => setConfirmNewPassword(e.target.value)}
-            />
+            style={{ borderColor: passwordError ? 'red' : 'initial' }}
+          />
+        {passwordError && <div className="error-message">{passwordError}</div>}
         </div>
         <button type="submit" className="reset-password-button">Reset Password</button>
       </form>
