@@ -14,8 +14,8 @@ function Dashboard() {
   const [newDeliveryTime, setNewDeliveryTime] = useState('12:00');
   const [weatherData, setWeatherData] = useState([]);
   const [addError, setAddError] = useState({ zipCode: false, deliveryTime: false });
-  const [editIndex, setEditIndex] = useState(false);
-  const [deleteIndex, setDeleteIndex] = useState(false);
+  const [editIndex, setEditIndex] = useState(null);
+  const [deleteIndex, setDeleteIndex] = useState(null);
   const [loading, setLoading] = useState(true);
   const [oldEditDeliveryTime, setOldEditDeliveryTime] = useState('');
   const navigate = useNavigate();  
@@ -48,7 +48,7 @@ function Dashboard() {
       const editedZipCodes = [...zipCodes];
       editedZipCodes[index].deliveryTime = oldEditDeliveryTime;
       setZipCodes(editedZipCodes);
-      setEditIndex(false);
+      setEditIndex(null);
     }
   };
 
@@ -99,7 +99,7 @@ function Dashboard() {
       const editedZipCodes = [...zipCodes];
       editedZipCodes[index].deliveryTime = oldEditDeliveryTime;
       setZipCodes(editedZipCodes);
-      setDeleteIndex(false);
+      setDeleteIndex(null);
     }
   };
 
@@ -130,6 +130,7 @@ function Dashboard() {
         if (!updatedZipCodes) {
           setLoading(false);
         }
+        setDeleteIndex(null);
         console.log('Zip code and delivery time deleted successfully');
       } else {
         console.error('Failed to delete zip code and delivery time:', response.statusText);
