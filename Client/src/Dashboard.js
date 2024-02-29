@@ -263,7 +263,8 @@ function Dashboard() {
 
   const formatTimeForDisplay = (timeString) => {
     const options = { hour: 'numeric', minute: 'numeric', hour12: true };
-    return new Date(`2000-01-01T${timeString}`).toLocaleTimeString(undefined, options);
+    const formattedTime = new Date(`2000-01-01T${timeString}`).toLocaleTimeString(undefined, options);
+    return formattedTime.replace(/\s/g, '');
   };  
 
   useEffect(() => {
