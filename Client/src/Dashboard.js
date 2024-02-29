@@ -16,6 +16,7 @@ function Dashboard() {
   const [addError, setAddError] = useState({ zipCode: false, deliveryTime: false });
   const [editIndex, setEditIndex] = useState(null);
   const [deleteIndex, setDeleteIndex] = useState(null);
+  const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
   const [loading, setLoading] = useState(true);
   const [oldEditDeliveryTime, setOldEditDeliveryTime] = useState('');
   const navigate = useNavigate();  
@@ -90,6 +91,7 @@ function Dashboard() {
   const handleDeleteZipCode = (index) => {
     setOldEditDeliveryTime(zipCodes[index].deliveryTime);
     setDeleteIndex(index);
+    setIsDeleteConfirmed(false); 
   };
 
   const handleDeleteCancel = () => {
@@ -119,6 +121,8 @@ function Dashboard() {
       });
   
       if (response.ok) {
+        setIsDeleteConfirmed(true); 
+        setTimeout(() => {
         const updatedZipCodes = [...zipCodes];
         updatedZipCodes.splice(deleteIndex, 1);
         setZipCodes(updatedZipCodes);
@@ -130,7 +134,9 @@ function Dashboard() {
         if (!updatedZipCodes) {
           setLoading(false);
         }
+        setIsDeleteConfirmed(false);
         setDeleteIndex(null);
+      }, 500);
         console.log('Zip code and delivery time deleted successfully');
       } else {
         console.error('Failed to delete zip code and delivery time:', response.statusText);
@@ -427,7 +433,7 @@ function Dashboard() {
             </thead>
             <tbody>
               {zipCodes.map((zipCode, index) => (
-                <tr key={index}>
+                <tr key={index} className={isDeleteConfirmed && deleteIndex === index ? "deleting-row" : ""}>
                   <td>{getLocationNameByZipCode(zipCode.zipCode)}</td>
                   <td>{zipCode.zipCode}</td>
                   <td>

@@ -250,6 +250,11 @@ html {
   cursor: pointer;
 }
 
+.deleting-row {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
 .logout-button button {
   margin-top: 15px;
   margin-bottom: 15px;
