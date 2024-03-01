@@ -60,13 +60,6 @@ function Dashboard() {
       const oldDeliveryTime = oldEditDeliveryTime;
       const editedDeliveryTime = zipCodes[editIndex].deliveryTime;
 
-      const isDuplicate = zipCodes.some(zipCodes => zipCodes.zipCode === zipCodeToEdit && zipCodes.deliveryTime === editedDeliveryTime);
-      
-      if (isDuplicate) {
-        alert('This zip code and delivery time combination already exists.'); 
-        return;
-      }
-      
       const response = await fetch('/api/editZipCode', {
         method: 'POST',
             headers: {
@@ -87,6 +80,8 @@ function Dashboard() {
         console.log('Zip code and delivery time updated successfully');
       } else {
         console.error('Failed to update zip code and delivery time:', response.statusText);
+        alert('This zip code and delivery time combination already exists.');
+        return;
       }
 
       setEditIndex(null);
@@ -178,7 +173,7 @@ function Dashboard() {
 
     const newZipCodeData = { zipCode: newZipCode, deliveryTime: newDeliveryTime };
     const isDuplicate = zipCodes.some(data => data.zipCode === newZipCodeData.zipCode && data.deliveryTime === newZipCodeData.deliveryTime);
-    
+
     if (isDuplicate) {
       alert('This zip code and delivery time combination already exists.'); 
       return;
