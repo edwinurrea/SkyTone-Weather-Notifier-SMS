@@ -60,6 +60,13 @@ function Dashboard() {
       const oldDeliveryTime = oldEditDeliveryTime;
       const editedDeliveryTime = zipCodes[editIndex].deliveryTime;
 
+      const isDuplicate = zipCodes.some(zipCodes => zipCodes.zipCode === zipCodeToEdit && zipCodes.deliveryTime === editedDeliveryTime);
+      
+      if (isDuplicate) {
+        alert('This zip code and delivery time combination already exists.'); 
+        return;
+      }
+      
       const response = await fetch('/api/editZipCode', {
         method: 'POST',
             headers: {
