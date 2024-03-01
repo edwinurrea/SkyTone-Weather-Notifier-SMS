@@ -62,16 +62,16 @@ function Dashboard() {
 
       const response = await fetch('/api/editZipCode', {
         method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({
-              zipCode: zipCodeToEdit,
-              oldDeliveryTime: oldDeliveryTime,
-              newDeliveryTime: editedDeliveryTime
-            }),
-          });
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            zipCode: zipCodeToEdit,
+            oldDeliveryTime: oldDeliveryTime,
+            newDeliveryTime: editedDeliveryTime
+          }),
+        });
   
       if (response.ok) {
         const updatedZipCodes = [...zipCodes];
