@@ -26,9 +26,9 @@ public class UserManager extends WeatherNotifier {
         // BCrypt hashes the password
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
-        String dbUrl = DatabaseConnector.config.getProperty("database.url");
-        String dbUser = DatabaseConnector.config.getProperty("database.username");
-        String dbPassword = DatabaseConnector.config.getProperty("database.password");
+        String dbUrl = System.getenv("database.url");
+        String dbUser = System.getenv("database.username");
+        String dbPassword = System.getenv("database.password");
 
         try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword)) {
             String query = "INSERT INTO users (phone_number, password_hash) VALUES (?, ?)";
@@ -46,9 +46,9 @@ public class UserManager extends WeatherNotifier {
         // BCrypt hashes the password
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
-        String dbUrl = DatabaseConnector.config.getProperty("database.url");
-        String dbUser = DatabaseConnector.config.getProperty("database.username");
-        String dbPassword = DatabaseConnector.config.getProperty("database.password");
+        String dbUrl = System.getenv("database.url");
+        String dbUser = System.getenv("database.username");
+        String dbPassword = System.getenv("database.password");
 
         try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword)) {
             String query = "SELECT user_id FROM users WHERE phone_number = ?";
@@ -76,9 +76,9 @@ public class UserManager extends WeatherNotifier {
 
     
     protected static boolean isUserAuthenticated(String formattedPhoneNumber, String password) {
-        String dbUrl = DatabaseConnector.config.getProperty("database.url");
-        String dbUser = DatabaseConnector.config.getProperty("database.username");
-        String dbPassword = DatabaseConnector.config.getProperty("database.password");
+        String dbUrl = System.getenv("database.url");
+        String dbUser = System.getenv("database.username");
+        String dbPassword = System.getenv("database.password");
 
         try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword)) {
             String query = "SELECT password_hash FROM users WHERE phone_number = ?";
@@ -99,9 +99,9 @@ public class UserManager extends WeatherNotifier {
     }
     
     protected static int getUserId(String formattedPhoneNumber) throws SQLException {
-        String dbUrl = DatabaseConnector.config.getProperty("database.url");
-        String dbUser = DatabaseConnector.config.getProperty("database.username");
-        String dbPassword = DatabaseConnector.config.getProperty("database.password");
+        String dbUrl = System.getenv("database.url");
+        String dbUser = System.getenv("database.username");
+        String dbPassword = System.getenv("database.password");
 
         try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword)) {
             String query = "SELECT user_id FROM users WHERE phone_number = ?";
@@ -121,7 +121,7 @@ public class UserManager extends WeatherNotifier {
     }
     
     protected static String generateToken(int userId) {
-        String secretKey = DatabaseConnector.config.getProperty("jwt.secret.key");
+        String secretKey = System.getenv("jwt.secret.key");
         if (secretKey == null) {
             throw new IllegalStateException("Secret key not found in configuration.");
         }

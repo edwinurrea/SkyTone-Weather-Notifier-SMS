@@ -21,9 +21,9 @@ public class CacheUtils extends WeatherNotifier{
     }
     
     public static WeatherData retrieveCachedWeatherData(String cacheKey, String zipCode) {
-        String dbUrl = DatabaseConnector.config.getProperty("database.url");
-        String dbUser = DatabaseConnector.config.getProperty("database.username");
-        String dbPassword = DatabaseConnector.config.getProperty("database.password");
+        String dbUrl = System.getenv("database.url");
+        String dbUser = System.getenv("database.username");
+        String dbPassword = System.getenv("database.password");
 
         try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword)) {
         String cleanupQuery = "DELETE FROM weather_cache WHERE expiration < CURRENT_TIMESTAMP";
@@ -77,9 +77,9 @@ public class CacheUtils extends WeatherNotifier{
     public static void storeWeatherDataInCache(String cacheKey, String locationName, Date date, int maxTemperature, int minTemperature,
         String weatherCondition, int chanceOfRain, String windSpeed, String windDirection,
         String sunrise, String sunset) throws SQLException {
-        String dbUrl = DatabaseConnector.config.getProperty("database.url");
-        String dbUser = DatabaseConnector.config.getProperty("database.username");
-        String dbPassword = DatabaseConnector.config.getProperty("database.password");
+        String dbUrl = System.getenv("database.url");
+        String dbUser = System.getenv("database.username");
+        String dbPassword = System.getenv("database.password");
         
         try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword)) {
             String cleanupQuery = "DELETE FROM weather_cache WHERE expiration < CURRENT_TIMESTAMP";

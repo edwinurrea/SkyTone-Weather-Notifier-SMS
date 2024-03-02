@@ -16,9 +16,9 @@ public class ZipCodeManager extends WeatherNotifier {
     private static final Logger logger = LoggerFactory.getLogger(WeatherNotifier.class);
     
     public static void insertZipCode(String zipCode) throws SQLException {
-        String dbUrl = DatabaseConnector.config.getProperty("database.url");
-        String dbUser = DatabaseConnector.config.getProperty("database.username");
-        String dbPassword = DatabaseConnector.config.getProperty("database.password");
+        String dbUrl = System.getenv("database.url");
+        String dbUser = System.getenv("database.username");
+        String dbPassword = System.getenv("database.password");
         String query = "INSERT INTO zip_codes (zip_code) VALUES (?)";
         try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword); 
                 PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -28,9 +28,9 @@ public class ZipCodeManager extends WeatherNotifier {
     }
 
     public static void associateUserWithZipDelivery(int userId, int zipCodeId, String deliveryTime) throws SQLException {
-        String dbUrl = DatabaseConnector.config.getProperty("database.url");
-        String dbUser = DatabaseConnector.config.getProperty("database.username");
-        String dbPassword = DatabaseConnector.config.getProperty("database.password");
+        String dbUrl = System.getenv("database.url");
+        String dbUser = System.getenv("database.username");
+        String dbPassword = System.getenv("database.password");
 
         String userZipCodeQuery = "INSERT INTO user_zip_codes (user_id, zip_code_id) VALUES (?, ?)";
         String userZipDeliveryQuery = "INSERT INTO user_zip_delivery (user_id, zip_code_id, delivery_time) VALUES (?, ?, ?)";
@@ -58,9 +58,9 @@ public class ZipCodeManager extends WeatherNotifier {
     }
     
     public static int updateZipCodeAndDeliveryTime(int userId, int zipCodeId, String deliveryTime) throws SQLException {
-        String dbUrl = DatabaseConnector.config.getProperty("database.url");
-        String dbUser = DatabaseConnector.config.getProperty("database.username");
-        String dbPassword = DatabaseConnector.config.getProperty("database.password");
+        String dbUrl = System.getenv("database.url");
+        String dbUser = System.getenv("database.username");
+        String dbPassword = System.getenv("database.password");
         
         String updateQuery = "INSERT INTO user_zip_delivery (user_id, zip_code_id, delivery_time) " + 
                             "VALUES (?, ?, ?) " +
@@ -83,9 +83,9 @@ public class ZipCodeManager extends WeatherNotifier {
     }
     
     public static void editZipCodeAndDeliveryTime(int userId, String zipCode, String oldDeliveryTime, String newDeliveryTime) throws SQLException {
-        String dbUrl = DatabaseConnector.config.getProperty("database.url");
-        String dbUser = DatabaseConnector.config.getProperty("database.username");
-        String dbPassword = DatabaseConnector.config.getProperty("database.password");
+        String dbUrl = System.getenv("database.url");
+        String dbUser = System.getenv("database.username");
+        String dbPassword = System.getenv("database.password");
 
         String checkEntryQuery = "SELECT COUNT(*) FROM user_zip_delivery WHERE user_id = ? AND zip_code_id = (SELECT zip_code_id FROM zip_codes WHERE zip_code = ?) AND delivery_time = ?";
         String updateQuery = "UPDATE user_zip_delivery SET delivery_time = ? WHERE user_id = ? AND zip_code_id = (SELECT zip_code_id FROM zip_codes WHERE zip_code = ?) AND delivery_time = ?";
@@ -117,9 +117,9 @@ public class ZipCodeManager extends WeatherNotifier {
     }
     
     public static void deleteZipCodeAndDeliveryTime(int userId, String zipCode, String deliveryTime) throws SQLException {
-        String dbUrl = DatabaseConnector.config.getProperty("database.url");
-        String dbUser = DatabaseConnector.config.getProperty("database.username");
-        String dbPassword = DatabaseConnector.config.getProperty("database.password");
+        String dbUrl = System.getenv("database.url");
+        String dbUser = System.getenv("database.username");
+        String dbPassword = System.getenv("database.password");
 
         String deleteQuery = "DELETE FROM user_zip_delivery WHERE user_id = ? AND zip_code_id = (SELECT zip_code_id FROM zip_codes WHERE zip_code = ?) AND delivery_time = ?";
         String checkAssociationsQuery = "SELECT COUNT(*) FROM user_zip_delivery WHERE zip_code_id = (SELECT zip_code_id FROM zip_codes WHERE zip_code = ?)";
@@ -166,9 +166,9 @@ public class ZipCodeManager extends WeatherNotifier {
     }
     
     public static int getZipCodeId(String zipCode) throws SQLException {
-        String dbUrl = DatabaseConnector.config.getProperty("database.url");
-        String dbUser = DatabaseConnector.config.getProperty("database.username");
-        String dbPassword = DatabaseConnector.config.getProperty("database.password");
+        String dbUrl = System.getenv("database.url");
+        String dbUser = System.getenv("database.username");
+        String dbPassword = System.getenv("database.password");
         String query = "SELECT zip_code_id FROM zip_codes WHERE zip_code = ?";
         try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword); 
                 PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -184,9 +184,9 @@ public class ZipCodeManager extends WeatherNotifier {
     public static String getZipCodeByUserId(int userId) throws SQLException {
         String zipCode = null;
 
-        String dbUrl = DatabaseConnector.config.getProperty("database.url");
-        String dbUser = DatabaseConnector.config.getProperty("database.username");
-        String dbPassword = DatabaseConnector.config.getProperty("database.password");
+        String dbUrl = System.getenv("database.url");
+        String dbUser = System.getenv("database.username");
+        String dbPassword = System.getenv("database.password");
 
         String query1 = "SELECT zip_code_id FROM user_zip_codes WHERE user_id = ?";
         try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword); 
@@ -213,9 +213,9 @@ public class ZipCodeManager extends WeatherNotifier {
     }
     
     public static String getDeliveryTimeForZipCode(int userId, int zipCodeId) throws SQLException {
-        String dbUrl = DatabaseConnector.config.getProperty("database.url");
-        String dbUser = DatabaseConnector.config.getProperty("database.username");
-        String dbPassword = DatabaseConnector.config.getProperty("database.password");
+        String dbUrl = System.getenv("database.url");
+        String dbUser = System.getenv("database.username");
+        String dbPassword = System.getenv("database.password");
         String query = "SELECT delivery_time FROM user_zip_delivery WHERE user_id = ? AND zip_code_id = ?";
         try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword); 
                 PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -232,9 +232,9 @@ public class ZipCodeManager extends WeatherNotifier {
     public List<ZipCodeData> getZipCodesAndDeliveryTimes(int userId) throws SQLException {
         List<ZipCodeData> zipCodeDataList = new ArrayList<>();
 
-        String dbUrl = DatabaseConnector.config.getProperty("database.url");
-        String dbUser = DatabaseConnector.config.getProperty("database.username");
-        String dbPassword = DatabaseConnector.config.getProperty("database.password");
+        String dbUrl = System.getenv("database.url");
+        String dbUser = System.getenv("database.username");
+        String dbPassword = System.getenv("database.password");
 
         String query = "SELECT pc.zip_code, upd.delivery_time "
                 + "FROM user_zip_codes upc "

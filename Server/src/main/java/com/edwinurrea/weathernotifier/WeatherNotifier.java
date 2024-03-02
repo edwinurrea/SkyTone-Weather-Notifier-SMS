@@ -44,7 +44,6 @@ public class WeatherNotifier {
     private static final int HTTP_INTERNAL_SERVER_ERROR = 500;
     
     public static void main(String[] args) {
-        DatabaseConnector.loadConfiguration();
         startSparkServer();
         logger.info("WeatherNotifier application started.");  
         
@@ -294,7 +293,7 @@ public class WeatherNotifier {
         post("/api/addZipCode", (Request request, Response response) -> {
             logger.info("Received add a zip code request.");
             try {
-                String secretKey = DatabaseConnector.config.getProperty("jwt.secret.key");
+                String secretKey = System.getenv("jwt.secret.key");
                 formattedPhoneNumber = request.session().attribute("formattedPhoneNumber");
                 userId = UserManager.getUserId(formattedPhoneNumber);
                 String token = request.headers("Authorization").replace("Bearer ", "");
@@ -336,7 +335,7 @@ public class WeatherNotifier {
         post("/api/editZipCode", (Request request, Response response) -> {
             logger.info("Received edit a zip code request");
             try {
-                String secretKey = DatabaseConnector.config.getProperty("jwt.secret.key");
+                String secretKey = System.getenv("jwt.secret.key");
                 formattedPhoneNumber = request.session().attribute("formattedPhoneNumber");
                 userId = UserManager.getUserId(formattedPhoneNumber);
                 String token = request.headers("Authorization").replace("Bearer ", "");
@@ -366,7 +365,7 @@ public class WeatherNotifier {
         post("/api/deleteZipCode", (Request request, Response response) -> {
             logger.info("Received delete a zip code request");
             try {
-                String secretKey = DatabaseConnector.config.getProperty("jwt.secret.key");
+                String secretKey = System.getenv("jwt.secret.key");
                 formattedPhoneNumber = request.session().attribute("formattedPhoneNumber");
                 userId = UserManager.getUserId(formattedPhoneNumber);
                 String token = request.headers("Authorization").replace("Bearer ", "");
@@ -395,7 +394,7 @@ public class WeatherNotifier {
         get("/api/weather", (Request request, Response response) -> {
             logger.info("Received weather data request");
             try {
-                String apiKey = DatabaseConnector.config.getProperty("accuweather.api.key");
+                String apiKey = System.getenv("accuweather.api.key");
                 String[] zipCodes = request.queryParamsValues("zipCodes");
 
                 List<WeatherData> weatherDataList = new ArrayList<>();
