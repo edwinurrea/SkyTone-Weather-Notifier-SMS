@@ -32,7 +32,7 @@ function ForgotPassword() {
     e.preventDefault();
 
     try {
-      const response = await fetch('/api/forgotpassword', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/forgotpassword`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -24,7 +24,7 @@ function ResetPassword() {
         return;
       }
 
-      const response = await fetch('/api/resetpassword', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/resetpassword`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ function ResetPassword() {
 
       if (response.ok) {
         alert("Password reset! Logging in with new password...")
-        const loginResponse = await fetch('/api/login', {
+        const loginResponse = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/login`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

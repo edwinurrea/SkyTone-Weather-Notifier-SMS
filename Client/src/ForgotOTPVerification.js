@@ -12,7 +12,7 @@ function OTPVerification() {
     e.preventDefault();
 
     try {
-      const response = await fetch('/api/forgotpasswordverify', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/forgotpasswordverify`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -35,7 +35,7 @@ function OTPVerification() {
   
   const handleResend = async () => {
     try {
-      const response = await fetch('/api/forgotpasswordresend', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/forgotpasswordresend`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

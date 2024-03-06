@@ -54,7 +54,7 @@ function Login() {
     event.preventDefault();
 
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -143,7 +143,7 @@ function Login() {
           Continue
         </button>  
       </form>
-      <p>Don't have an account? <a href="/signup">Sign Up</a></p>
+      <p>Don't have an account? <Link to="/signup">Sign Up</Link></p>
     </div>
   );
 }

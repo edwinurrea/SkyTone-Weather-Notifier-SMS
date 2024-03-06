@@ -42,7 +42,7 @@ function SignUp() {
     }
     
     try {
-      const response = await fetch('/api/signup', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -117,7 +117,7 @@ function SignUp() {
         </div>
         <button className="su-signup-button" type="submit">Sign Up</button>
       </form>
-      <p>Already have an account? <a href="/login">Log in</a></p>
+      <p>Already have an account? <Link to="/login">Log in</Link></p>
     </div>
   );
 }

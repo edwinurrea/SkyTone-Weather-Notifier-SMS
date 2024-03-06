@@ -23,6 +23,7 @@ import java.util.Set;
 
 import spark.Request;
 import spark.Response;
+import spark.Spark;
 import static spark.Spark.*;
 
 public class WeatherNotifier {
@@ -44,6 +45,7 @@ public class WeatherNotifier {
     private static final int HTTP_INTERNAL_SERVER_ERROR = 500;
     
     public static void main(String[] args) {
+        Spark.port(5000);
         startSparkServer();
         logger.info("WeatherNotifier application started.");  
         
@@ -53,6 +55,26 @@ public class WeatherNotifier {
     }
         
     private static void startSparkServer() {
+        before((request, response) -> {
+            response.header("Access-Control-Allow-Origin", "*");
+            response.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+            response.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        });
+                
+        options("/*", (request, response) -> {
+            String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
+            if (accessControlRequestHeaders != null) {
+                response.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
+            }
+
+            String accessControlRequestMethod = request.headers("Access-Control-Request-Method");
+            if (accessControlRequestMethod != null) {
+                response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
+            }
+
+            return "OK";
+        });
+        
         post("/api/login", (Request request, Response response) -> {
             logger.info("Received login request.");
             try {
@@ -293,7 +315,7 @@ public class WeatherNotifier {
         post("/api/addZipCode", (Request request, Response response) -> {
             logger.info("Received add a zip code request.");
             try {
-                String secretKey = System.getenv("jwt.secret.key");
+                String secretKey = System.getenv("jwt_secret_key");
                 formattedPhoneNumber = request.session().attribute("formattedPhoneNumber");
                 userId = UserManager.getUserId(formattedPhoneNumber);
                 String token = request.headers("Authorization").replace("Bearer ", "");
@@ -335,7 +357,7 @@ public class WeatherNotifier {
         post("/api/editZipCode", (Request request, Response response) -> {
             logger.info("Received edit a zip code request");
             try {
-                String secretKey = System.getenv("jwt.secret.key");
+                String secretKey = System.getenv("jwt_secret_key");
                 formattedPhoneNumber = request.session().attribute("formattedPhoneNumber");
                 userId = UserManager.getUserId(formattedPhoneNumber);
                 String token = request.headers("Authorization").replace("Bearer ", "");
@@ -365,7 +387,7 @@ public class WeatherNotifier {
         post("/api/deleteZipCode", (Request request, Response response) -> {
             logger.info("Received delete a zip code request");
             try {
-                String secretKey = System.getenv("jwt.secret.key");
+                String secretKey = System.getenv("jwt_secret_key");
                 formattedPhoneNumber = request.session().attribute("formattedPhoneNumber");
                 userId = UserManager.getUserId(formattedPhoneNumber);
                 String token = request.headers("Authorization").replace("Bearer ", "");
@@ -394,7 +416,7 @@ public class WeatherNotifier {
         get("/api/weather", (Request request, Response response) -> {
             logger.info("Received weather data request");
             try {
-                String apiKey = System.getenv("accuweather.api.key");
+                String apiKey = System.getenv("accuweather_api_key");
                 String[] zipCodes = request.queryParamsValues("zipCodes");
 
                 List<WeatherData> weatherDataList = new ArrayList<>();

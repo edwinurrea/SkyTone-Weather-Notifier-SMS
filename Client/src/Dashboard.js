@@ -60,7 +60,7 @@ function Dashboard() {
       const oldDeliveryTime = oldEditDeliveryTime;
       const editedDeliveryTime = zipCodes[editIndex].deliveryTime;
 
-      const response = await fetch('/api/editZipCode', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/editZipCode`, {
         method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -113,7 +113,7 @@ function Dashboard() {
       const zipCodeToDelete = zipCodes[deleteIndex].zipCode;
       const deliveryTimeToDelete = zipCodes[deleteIndex].deliveryTime;
   
-      const response = await fetch('/api/deleteZipCode', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/deleteZipCode`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -186,7 +186,7 @@ function Dashboard() {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('/api/addZipCode', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/addZipCode`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -206,7 +206,7 @@ function Dashboard() {
         } else {
 
         const zipCodesQueryParam = `zipCodes=${newZipCodeData.zipCode}`;
-        fetch(`/api/weather?${zipCodesQueryParam}`, {
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/api/weather?${zipCodesQueryParam}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -288,7 +288,7 @@ function Dashboard() {
         const zipCodesQueryParam = uniqueZipCodes.map(uniqueZipCode => `zipCodes=${uniqueZipCode}`).join('&');
 
         if (uniqueZipCodes.length > 0) {
-          fetch(`/api/weather?${zipCodesQueryParam}`, {
+          fetch(`${process.env.REACT_APP_BACKEND_URL}/api/weather?${zipCodesQueryParam}`, {
             headers: {
               'Authorization': `Bearer ${token}`
             }

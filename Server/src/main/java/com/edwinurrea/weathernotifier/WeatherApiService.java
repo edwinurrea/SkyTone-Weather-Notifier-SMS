@@ -126,7 +126,7 @@ public class WeatherApiService extends WeatherNotifier {
     
     protected static WeatherData parseForecastJson(JSONObject forecastJson, String zipCode, int userId) throws SQLException {        
         try {
-            String apiKey = System.getenv("accuweather.api.key");
+            String apiKey = System.getenv("accuweather_api_key");
             LocationInfo locationInfo = getLocationInfo(zipCode, apiKey);
             
             if (locationInfo != null) {

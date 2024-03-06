@@ -16,9 +16,9 @@ public class TwilioService extends WeatherNotifier {
     private static final Logger logger = LoggerFactory.getLogger(WeatherNotifier.class);
     
     protected static String sendVerificationCode(String formattedPhoneNumber) {
-        String ACCOUNT_SID = System.getenv("twilio.account.sid");
-        String AUTH_TOKEN = System.getenv("twilio.auth.token");
-        String VERIFY_SERVICE_SID = System.getenv("twilio.verify.sid");
+        String ACCOUNT_SID = System.getenv("twilio_account_sid");
+        String AUTH_TOKEN = System.getenv("twilio_auth_token");
+        String VERIFY_SERVICE_SID = System.getenv("twilio_verify_sid");
         
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
 
@@ -32,9 +32,9 @@ public class TwilioService extends WeatherNotifier {
     }
 
     protected static String verifyPhoneNumber(String verificationSid, String formattedPhoneNumber, String verificationCode) throws IOException {
-        String ACCOUNT_SID = System.getenv("twilio.account.sid");
-        String AUTH_TOKEN = System.getenv("twilio.auth.token");
-        String VERIFY_SERVICE_SID = System.getenv("twilio.verify.sid");
+        String ACCOUNT_SID = System.getenv("twilio_account_sid");
+        String AUTH_TOKEN = System.getenv("twilio_auth_token");
+        String VERIFY_SERVICE_SID = System.getenv("twilio_verify_sid");
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
 
         try {
@@ -50,9 +50,9 @@ public class TwilioService extends WeatherNotifier {
     }
 
     protected static void sendMessage(String formattedPhoneNumber, String message) {
-        String ACCOUNT_SID = System.getenv("twilio.account.sid");
-        String AUTH_TOKEN = System.getenv("twilio.auth.token");
-        String from = System.getenv("twilio.default.from.number");
+        String ACCOUNT_SID = System.getenv("twilio_account_sid");
+        String AUTH_TOKEN = System.getenv("twilio_auth_token");
+        String from = System.getenv("twilio_default_from_number");
 
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         Message.creator(new PhoneNumber(formattedPhoneNumber), new PhoneNumber(from), message).create();
