@@ -68,7 +68,8 @@ function Login() {
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem('token', data.token);
-      
+        localStorage.setItem('phoneNumber', phoneNumber);
+
         if (data.zipCodes !== null) {
           localStorage.setItem('zipCodes', JSON.stringify(data.zipCodes));
         }

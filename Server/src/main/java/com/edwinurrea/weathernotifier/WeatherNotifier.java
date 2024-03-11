@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.mindrot.jbcrypt.BCrypt;
 
 import spark.Request;
 import spark.Response;
@@ -334,7 +335,7 @@ public class WeatherNotifier {
         });
 
         post("/api/editZipCode", (Request request, Response response) -> {
-            logger.info("Received edit a zip code request");
+            logger.info("Received edit a zip code request.");
             try {
                 String secretKey = DatabaseConnector.config.getProperty("jwt.secret.key");
                 formattedPhoneNumber = request.session().attribute("formattedPhoneNumber");
@@ -364,7 +365,7 @@ public class WeatherNotifier {
         });
 
         post("/api/deleteZipCode", (Request request, Response response) -> {
-            logger.info("Received delete a zip code request");
+            logger.info("Received delete a zip code request.");
             try {
                 String secretKey = DatabaseConnector.config.getProperty("jwt.secret.key");
                 formattedPhoneNumber = request.session().attribute("formattedPhoneNumber");
@@ -392,8 +393,39 @@ public class WeatherNotifier {
             }
         });
 
+        post("/api/deleteUser", (Request request, Response response) -> {
+            logger.info("Received delete user request.");
+            try {                
+                JsonObject json = parseJsonRequestBody(request);
+
+                phoneNumber = json.get("phoneNumber").getAsString();
+                password = json.get("password").getAsString();
+                
+                countryCode = ValidationUtils.getValidCountryCode();
+                formattedPhoneNumber = ValidationUtils.formatToE164(phoneNumber, countryCode);
+                userId = UserManager.getUserId(formattedPhoneNumber);
+
+                String hashedPassword = UserManager.getPassword(formattedPhoneNumber);
+
+                if (BCrypt.checkpw(password, hashedPassword)) {
+                    // Passwords match, proceed with user deletion
+                    UserManager.deleteUser(userId);
+                    response.status(HTTP_OK);
+                    return "Deleted user successfully.";
+                } else {
+                    // Passwords don't match, return an error
+                    response.status(HTTP_UNAUTHORIZED);
+                    return "Invalid password.";
+                }
+            } catch (SQLException e) {
+                logger.error("SQL error while deleting user.", e);
+                response.status(HTTP_INTERNAL_SERVER_ERROR);
+                return "Error deleting user.";
+            }
+        });
+        
         get("/api/weather", (Request request, Response response) -> {
-            logger.info("Received weather data request");
+            logger.info("Received weather data request.");
             try {
                 String apiKey = DatabaseConnector.config.getProperty("accuweather.api.key");
                 String[] zipCodes = request.queryParamsValues("zipCodes");

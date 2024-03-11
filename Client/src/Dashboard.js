@@ -6,6 +6,7 @@ import Trash from './images/trashcan.png';
 import Cancel from './images/cancel-button.png';
 import Confirm from './images/confirm-button.png';
 import AccuWeatherAttribution from './images/AW_RGB_R.png';
+import Settings from './images/settings-button.png';
 import { Link, useNavigate } from 'react-router-dom';
 
 function Dashboard() {
@@ -19,7 +20,84 @@ function Dashboard() {
   const [isDeleteConfirmed, setIsDeleteConfirmed] = useState(false);
   const [loading, setLoading] = useState(true);
   const [oldEditDeliveryTime, setOldEditDeliveryTime] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [showResetPasswordPopup, setShowResetPasswordPopup] = useState(false);
+  const [showDeleteAccountPopup, setShowDeleteAccountPopup] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const navigate = useNavigate();  
+
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+    setPasswordError('');
+  };
+
+  const handleResetPasswordClick = () => {
+    setShowResetPasswordPopup(true);
+    setShowDropdown(false);
+  }
+
+  const handleResetPasswordSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      if (newPassword !== confirmNewPassword) {
+        setPasswordError("Passwords do not match");
+        return;
+      }
+
+      const response = await fetch('/api/resetpassword', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ password: newPassword }),
+      });
+
+      if (response.ok) {
+        alert("Password reset! Next time, login with your new password!")
+        setShowResetPasswordPopup(false);
+        setNewPassword('');
+        setConfirmNewPassword('');
+        setPasswordError('');
+      } else {
+        const errorData = await response.json();
+        console.error(errorData.error);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const handleDeleteAccountClick = () => {
+    setShowDeleteAccountPopup(true);
+    setShowDropdown(false);
+  }
+
+  const handleDeleteAccountSubmit = async (e) => {
+    e.preventDefault();
+
+      const response = await fetch('/api/deleteUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ phoneNumber: localStorage.getItem('phoneNumber'), password: newPassword }),
+      });
+
+      if (response.ok) {
+        alert("Account Deleted! Hope you come back sometime!")
+        setShowDeleteAccountPopup(false);
+        setNewPassword('');
+        localStorage.clear();
+        navigate('/');
+      } else {
+        setPasswordError("Wrong password!")
+        const errorData = await response.json();
+        console.error(errorData.error);
+      }
+  };
 
   const handleZipCodeChange = (event) => {
     setNewZipCode(event.target.value);
@@ -334,6 +412,75 @@ function Dashboard() {
       <Link to="/">
         <img src={Logo} alt="Logo" />
       </Link>
+      </div>
+      <div className="settings-container">
+        <img src={Settings} alt="Settings" onClick={toggleDropdown} className="settings-button"/>
+        {showDropdown && (
+          <div className="dropdown-menu">
+            <button onClick={handleResetPasswordClick}>Reset Password</button>
+            <button onClick={handleDeleteAccountClick}>Delete Account</button>
+          </div>
+        )}
+        {showResetPasswordPopup && (
+          <div className="popup">
+            <div className="reset-popup-content">
+              <h2>Reset Password</h2>
+              <form className="reset-password-form" onSubmit={handleResetPasswordSubmit}>
+                <div className="reset-form-group">
+                  <label htmlFor="newPassword">New Password</label>
+                  <input 
+                    type="password" 
+                    id="newPassword" 
+                    name="newPassword" 
+                    placeholder="Enter your new password" 
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    style={{ borderColor: passwordError ? 'white' : 'initial' }}
+                  />
+                </div>
+                <div className="reset-form-group">
+                  <label htmlFor="confirmNewPassword">Confirm New Password</label>
+                  <input 
+                    type="password" 
+                    id="confirmNewPassword" 
+                    name="confirmNewPassword" 
+                    placeholder="Confirm your new password" 
+                    value={confirmNewPassword}
+                    onChange={(e) => setConfirmNewPassword(e.target.value)}
+                    style={{ borderColor: passwordError ? 'white' : 'initial' }}
+                  />
+                {passwordError && <div className="password-error-message">{passwordError}</div>}
+                </div>
+                <button type="submit" className="reset-password-button">RESET</button>
+              </form>
+              <button className="cancel-button" onClick={() => [setShowResetPasswordPopup(false), setNewPassword(''), setConfirmNewPassword('')]}>Cancel</button>
+            </div>
+          </div>
+        )}
+        {showDeleteAccountPopup && (
+          <div className="popup">
+            <div className="delete-popup-content">
+              <h2>Delete Account</h2>
+              <form className="delete-password-form" onSubmit={handleDeleteAccountSubmit}>
+              <h4>Are you sure? You will be logged out immediately and lose all access to this account!</h4>
+              <label className="current-password-label" htmlFor="currentPassword">Current Password</label>
+              <input
+                className="current-password-input"
+                type="password" 
+                id="password" 
+                name="password" 
+                placeholder="Enter your password" 
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                style={{ borderColor: passwordError ? 'white' : 'initial' }}
+              />
+              {passwordError && <div className="delete-password-error-message">{passwordError}</div>}
+              <button type="submit" className="delete-password-button">DELETE</button>
+              </form>
+              <button className="cancel-button" onClick={() => [setShowDeleteAccountPopup(false), setNewPassword('')]}>Cancel</button>
+            </div>
+          </div>
+        )}
       </div>
       <h2>Welcome to Your Dashboard</h2>
       <div className="AccuWeather-Attribution">
