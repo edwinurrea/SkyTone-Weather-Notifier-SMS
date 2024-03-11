@@ -17,9 +17,136 @@ html {
   max-width: 90px;
 }
 
+.settings-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.settings-button {
+  max-width: 30px;
+  max-height: 30px;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 999;
+}
+
+.dropdown-menu button {
+  width: 115px;
+  background-color: #a8b6bf;
+  color: black;
+  border: 2px solid black;
+  cursor: pointer;
+}
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-right: -45px;
+  transform: translate(-50%, -50%);
+  background-color: #F05514;
+  padding: 20px;
+  padding-right: 15px;
+  padding-left: 10px;
+  border: 3px solid black;
+  border-radius: 5px;
+  z-index: 9999;
+}
+
+.reset-popup-content h2 {
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+.delete-popup-content h2 {
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+.delete-popup-content h4 {
+  margin-top: 0px;
+  margin-bottom: 15px;
+}
+
+.reset-password-button {
+  display: block;
+  width: 50%;
+  padding: 15px;
+  background-color: #c8eafa;
+  color: red;
+  font-weight: bold;
+  border: 2px solid black;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 0 auto;
+  text-align: center;
+  box-sizing: border-box;
+  float: right;
+}
+
+.reset-password-button:hover {
+  background-color: #a5d4ed;
+}
+
+.delete-password-button {
+  display: block;
+  width: 50%;
+  padding: 15px;
+  background-color: #c8eafa;
+  color: red;
+  font-weight: bold;
+  border: 2px solid black;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 0 auto;
+  text-align: center;
+  box-sizing: border-box;
+  float: right;
+}
+
+.delete-password-button:hover {
+  background-color: #a5d4ed;
+}
+
+.current-password-label {
+  text-align: left;
+}
+
+.current-password-input {
+  margin-bottom: 15px;
+}
+
+.cancel-button {
+  display: block;
+  width: 50%;
+  padding: 15px;
+  background-color: #c8eafa;
+  color: black;
+  border: 2px solid black;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 0 auto;
+  text-align: center;
+  box-sizing: border-box;
+  float: left;
+}
+
+.cancel-button:hover {
+  background-color: #a5d4ed;
+}
+
 .AccuWeather-Attribution {
   display: flex;
-  justify-content:center;
+  justify-content: center;
   margin-top: -35px;
   margin-bottom: -25px;
 }
@@ -158,13 +285,28 @@ html {
   background-color: #D94500;
 }
 
+.password-error-message {
+  color: white;
+  font-size: 12px;
+  margin-top: 4px;
+  text-align: left;
+}
+ 
+.delete-password-error-message {
+  color: white;
+  font-size: 12px;
+  margin-top: -5px;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
 .error-message {
   color: red;
   font-size: 12px;
   margin-top: 4px;
   text-align: left;
 }
-  
+
 .zip-codes-list {
   display: flex;
   flex-direction: row;

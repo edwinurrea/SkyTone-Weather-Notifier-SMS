@@ -42,6 +42,56 @@ public class UserManager extends WeatherNotifier {
         }
     }
     
+    protected static void deleteUser(int userId) {
+        String dbUrl = System.getenv("database_url");
+        String dbUser = System.getenv("database_username");
+        String dbPassword = System.getenv("database_password");
+
+        String deleteQuery = """
+                             DELETE FROM user_zip_codes WHERE user_id = ?;
+                             DELETE FROM user_zip_delivery WHERE user_id = ?;
+                             DELETE FROM users WHERE user_id = ?;
+                             """;
+
+        try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword); PreparedStatement deleteStmt = conn.prepareStatement(deleteQuery)) {
+
+            conn.setAutoCommit(false);
+
+            deleteStmt.setInt(1, userId);
+            deleteStmt.setInt(2, userId);
+            deleteStmt.setInt(3, userId);
+
+            deleteStmt.executeUpdate();
+
+            conn.commit();
+        } catch (SQLException e) {
+            logger.error("Error: Failed to delete user data.", e);
+        }
+    }
+
+    protected static String getPassword(String formattedPhoneNumber) {
+        String dbUrl = System.getenv("database_url");
+        String dbUser = System.getenv("database_username");
+        String dbPassword = System.getenv("database_password");
+
+        try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword)) {
+            String query = "SELECT password_hash FROM users WHERE phone_number = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setString(1, formattedPhoneNumber);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        return rs.getString("password_hash");
+                    } else {
+                        logger.error("Error: User with the given phone number does not exist.");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            logger.error("Error: Failed to retrieve password.", e);
+        }
+        return null;
+    }
+    
     protected static void resetPassword(String formattedPhoneNumber, String password) {
         // BCrypt hashes the password
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
