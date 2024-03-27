@@ -46,6 +46,7 @@ public class WeatherNotifier {
     private static final int HTTP_INTERNAL_SERVER_ERROR = 500;
     
     public static void main(String[] args) {
+        port(443);
         Spark.port(5000);
         startSparkServer();
         logger.info("WeatherNotifier application started.");  
